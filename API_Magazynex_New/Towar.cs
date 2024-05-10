@@ -64,11 +64,3 @@ namespace Magazynex_console
         }
     }
 }
-
-class TowarDb : DbContext
-{
-    public TowarDb(DbContextOptions<TowarDb> options)
-    : base(options) { }
-
-    public DbSet<Towar> Towars => Set<Towar>();
-}

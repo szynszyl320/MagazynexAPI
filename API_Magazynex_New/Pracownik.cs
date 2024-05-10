@@ -51,7 +51,7 @@ namespace Magazynex_console
             Stanowisko = stanowisko;
         }
 
-        public void Assing_Numer_telefonu(string numer_telefonu)
+        public void Assign_Numer_telefonu(string numer_telefonu)
         {
             numer_telefonu.Replace(" ", "");
             Numer_Telefonu = Convert.ToInt32(numer_telefonu);
@@ -61,12 +61,4 @@ namespace Magazynex_console
 
 
     }
-}
-
-class PracownikDb : DbContext
-{
-    public PracownikDb(DbContextOptions<PracownikDb> options)
-    : base(options) { }
-
-    public DbSet<Pracownik> Pracowniks => Set<Pracownik>();
 }

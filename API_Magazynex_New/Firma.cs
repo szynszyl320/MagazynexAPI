@@ -37,10 +37,3 @@ namespace Magazynex_console
     }
 }
 
-class FirmaDb : DbContext
-{
-    public FirmaDb(DbContextOptions<FirmaDb> options)
-        : base(options) { }
-
-    public DbSet<Firma> Firmas => Set<Firma>();
-}

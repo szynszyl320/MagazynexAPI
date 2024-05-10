@@ -1,13 +1,11 @@
 using Magazynex_console;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Namotion.Reflection;
 using NSwag.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<FirmaDb>(opt => opt.UseInMemoryDatabase("Firmy"));
-builder.Services.AddDbContext<MagazynDb>(opt => opt.UseInMemoryDatabase("Magazyny"));
-builder.Services.AddDbContext<TowarDb>(opt => opt.UseInMemoryDatabase("Towary"));
-builder.Services.AddDbContext<PracownikDb>(opt => opt.UseInMemoryDatabase("Pracownicy"));
+builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("Magazynex"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -33,21 +31,21 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.MapGet("/firmas", async (FirmaDb db) =>
+app.MapGet("/firmas", async (DatabaseContext db) =>
 {
     var firmaItems = await db.Firmas.ToListAsync();
     return Results.Ok(firmaItems);
 });
 
 
-app.MapGet("/firmas/{Nazwa}", async (string Nazwa, FirmaDb db) =>
+app.MapGet("/firmas/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var firmaItem = await db.Firmas.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
 
     return firmaItem != null ? Results.Ok(firmaItem) : Results.NotFound();
 });
 
-app.MapPost("/firmas", async (Firma todo, FirmaDb db) =>
+app.MapPost("/firmas", async (Firma todo, DatabaseContext db) =>
 {
     db.Firmas.Add(todo);
     await db.SaveChangesAsync();
@@ -55,7 +53,7 @@ app.MapPost("/firmas", async (Firma todo, FirmaDb db) =>
     return Results.Created($"/firmas/{todo.Nazwa}", todo);
 });
 
-app.MapPut("/firmas/{Nazwa}", async (string Nazwa, Firma inputTodo, FirmaDb db) =>
+app.MapPut("/firmas/{Nazwa}", async (string Nazwa, Firma inputTodo, DatabaseContext db) =>
 {
     var firmaItem = await db.Firmas.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
 
@@ -70,7 +68,7 @@ app.MapPut("/firmas/{Nazwa}", async (string Nazwa, Firma inputTodo, FirmaDb db) 
 });
 
 
-app.MapDelete("/firmas/{Nazwa}", async (string Nazwa, FirmaDb db) =>
+app.MapDelete("/firmas/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var firmaItem = await db.Firmas.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
 
@@ -87,26 +85,26 @@ app.MapDelete("/firmas/{Nazwa}", async (string Nazwa, FirmaDb db) =>
 
 // Magazyn
 
-app.MapGet("/magazyns", async (MagazynDb db) =>
+app.MapGet("/magazyns", async (DatabaseContext db) =>
 {
     var magazynitems = await db.magazyns.ToListAsync();
     return Results.Ok(magazynitems);
 });
 
-app.MapGet("/magazyns{Nazwa}", async (string Nazwa, MagazynDb db) =>
+app.MapGet("/magazyns{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var magazynItem = await db.magazyns.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
     return magazynItem != null ? Results.Ok(magazynItem) : Results.NotFound();
 });
 
-app.MapPost("/magazyns", async (Magazyn todo, MagazynDb db) =>
+app.MapPost("/magazyns", async (Magazyn todo, DatabaseContext db) =>
 {
     db.magazyns.Add(todo);
     await db.SaveChangesAsync();
     return Results.Created($"/magazyns/{todo.Nazwa}", todo);
 });
 
-app.MapPut("/magazyns/{Nazwa}", async (string Nazwa, Magazyn inputTodo, MagazynDb db) =>
+app.MapPut("/magazyns/{Nazwa}", async (string Nazwa, Magazyn inputTodo, DatabaseContext db) =>
 {
     var magazynItem = await db.magazyns.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
     if (magazynItem is null) return Results.NotFound();
@@ -117,7 +115,7 @@ app.MapPut("/magazyns/{Nazwa}", async (string Nazwa, Magazyn inputTodo, MagazynD
     return Results.NoContent();
 });
 
-app.MapDelete("/magazyns/{Nazwa}", async (string Nazwa, MagazynDb db) =>
+app.MapDelete("/magazyns/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var magazynItem = await db.magazyns.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
     if (magazynItem != null)
@@ -131,26 +129,26 @@ app.MapDelete("/magazyns/{Nazwa}", async (string Nazwa, MagazynDb db) =>
 
 // Towary
 
-app.MapGet("/towars", async (TowarDb db) =>
+app.MapGet("/towars", async (DatabaseContext db) =>
 {
     var towarItem = await db.Towars.ToListAsync();
     return Results.Ok(towarItem);
 });
 
-app.MapGet("/towars{Nazwa_Produktu}", async (string Nazwa_Produktu, TowarDb db) =>
+app.MapGet("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, DatabaseContext db) =>
 {
     var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
     return towarItem != null ? Results.Ok(towarItem) : Results.NotFound();
 });
 
-app.MapPost("/towars", async (Towar towar, TowarDb db) =>
+app.MapPost("/towars", async (Towar towar, DatabaseContext db) =>
 {
     db.Towars.Add(towar);
     await db.SaveChangesAsync();
     return Results.Created($"/towars/{towar.Nazwa_Produktu}", towar);
 });
 
-app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, TowarDb db) =>
+app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, DatabaseContext db) =>
 {
     var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
     if (towarItem is null) return Results.NotFound();
@@ -165,7 +163,7 @@ app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar input
     return Results.NoContent();
 });
 
-app.MapDelete("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, TowarDb db) =>
+app.MapDelete("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, DatabaseContext db) =>
 {
     var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
     if (towarItem != null)
@@ -177,11 +175,51 @@ app.MapDelete("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, TowarDb 
     return Results.NotFound();
 });
 
+// Pracownik
 
+app.MapGet("/pracowniks", async (DatabaseContext db) =>
+{
+    var PracownikItem = await db.Pracowniks.ToListAsync();
+    return Results.Ok(PracownikItem);
+});
 
+app.MapGet("/pracowniks/{Imie}", async (string Imie, DatabaseContext db) =>
+{
+    var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
+    return pracownikItem != null ? Results.Ok(pracownikItem) : Results.NotFound();
+});
 
+app.MapPost("/pracowniks/", async (Pracownik pracownik, DatabaseContext db) =>
+{
+    db.Pracowniks.Add(pracownik);
+    await db.SaveChangesAsync();
+    return Results.Created($"/pracowniks/{pracownik.Imie}", pracownik);
+});
 
+app.MapPut("/pracowniks/{Imie}", async (string Imie, Pracownik inputPracownik, DatabaseContext db) =>
+{
+    var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
+    if (pracownikItem is null) return Results.NotFound();
+    pracownikItem.Imie = inputPracownik.Imie;
+    pracownikItem.Nazwisko = inputPracownik.Nazwisko;
+    pracownikItem.Stanowisko = inputPracownik.Stanowisko;
+    pracownikItem.Numer_Telefonu = inputPracownik.Numer_Telefonu;
+    pracownikItem.Magazyn = inputPracownik.Magazyn;
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
 
+app.MapDelete("/pracowniks/{Imie}", async (string Imie, DatabaseContext db) =>
+{
+    var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
+    if (pracownikItem != null)
+    {
+        db.Pracowniks.Remove(pracownikItem);
+        await db.SaveChangesAsync();
+        return Results.NoContent();
+    }
+    return Results.NotFound();
+});
 
 
 

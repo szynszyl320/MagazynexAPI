@@ -45,10 +45,3 @@ namespace Magazynex_console
 
 }
 
-class MagazynDb : DbContext
-{
-    public MagazynDb(DbContextOptions<MagazynDb> options) 
-    : base(options) { }
-
-    public DbSet<Magazyn> magazyns => Set<Magazyn>();   
-}
