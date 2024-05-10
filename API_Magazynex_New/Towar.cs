@@ -10,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace Magazynex_console
 {
+    [Keyless]
     public class Towar
-    {
+    { 
         public Firma? Firma { get; set; }
         public  Magazyn? Magazyn { get; set; }
         public string? Opis_Produktu { get; set; }
@@ -62,5 +63,17 @@ namespace Magazynex_console
                 return true;
             }
         }
+        public bool Danger_Class(int Class)
+        {
+            if (Class < int.Parse(Klasa_Towarow_Niebezpiecznych))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }

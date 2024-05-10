@@ -91,7 +91,7 @@ app.MapGet("/magazyns", async (DatabaseContext db) =>
     return Results.Ok(magazynitems);
 });
 
-app.MapGet("/magazyns{Nazwa}", async (string Nazwa, DatabaseContext db) =>
+app.MapGet("/magazyns/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var magazynItem = await db.magazyns.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
     return magazynItem != null ? Results.Ok(magazynItem) : Results.NotFound();

@@ -20,6 +20,7 @@ namespace Magazynex_console
         public int Id { get; set; }
         public  List<Pracownik> Pracownicy { get; set; }
         public string? lokalizacja { get; set; }
+        public int? Mozliwosc_Pechowywania_Materialow { get; set; }
 
         public string? Nazwa { get; set; }
 
@@ -40,7 +41,6 @@ namespace Magazynex_console
                 return true;
             }
         }
-
     }
 
 }
