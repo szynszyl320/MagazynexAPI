@@ -1,3 +1,4 @@
+using API_Magazynex_New;
 using Magazynex_console;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
@@ -46,12 +47,17 @@ app.MapGet("/firmas/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 });
 
 
-app.MapPost("/firmas", async (Firma todo, DatabaseContext db) =>
+app.MapPost("/firmas", async (FirmaCreateDTO dto, DatabaseContext db) =>
 {
-    db.Firmas.Add(todo);
+    Firma firma = new Firma();
+
+    firma.Nazwa = dto.Nazwa;
+    firma.Numer_Telefonu = dto.Numer_Telefonu;  
+    
+    db.Firmas.Add(firma);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/firmas/{todo.Nazwa}", todo);
+    return Results.Created($"/firmas/{firma.Nazwa}", firma);
 });
 
 app.MapPut("/firmas/{Nazwa}", async (string Nazwa, Firma inputTodo, DatabaseContext db) =>
@@ -98,11 +104,18 @@ app.MapGet("/magazyns/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
     return magazynItem != null ? Results.Ok(magazynItem) : Results.NotFound();
 });
 
-app.MapPost("/magazyns", async (Magazyn todo, DatabaseContext db) =>
+app.MapPost("/magazyns", async (MagazynCreateDTO dto, DatabaseContext db) =>
 {
-    db.magazyns.Add(todo);
+    Magazyn magazyn = new Magazyn();
+    magazyn.Nazwa = dto.Nazwa;
+    magazyn.lokalizacja = dto.lokalizacja;
+    magazyn.Mozliwosc_Pechowywania_Materialow = magazyn.Mozliwosc_Pechowywania_Materialow;
+    magazyn.Towary = new List<Towar>();
+    magazyn.Pracownicy = new List<Pracownik>();
+    
+    db.magazyns.Add(magazyn);
     await db.SaveChangesAsync();
-    return Results.Created($"/magazyns/{todo.Nazwa}", todo);
+    return Results.Created($"/magazyns/{magazyn.Nazwa}", magazyn);
 });
 
 app.MapPut("/magazyns/{Nazwa}", async (string Nazwa, Magazyn inputTodo, DatabaseContext db) =>
@@ -146,10 +159,17 @@ app.MapPost("/towars", async (TowarCreateDTO dto, DatabaseContext db) =>
 {
     Towar nowyTowar = new Towar();
     nowyTowar.Nazwa_Produktu = dto.Nazwa_Produktu;
+    nowyTowar.Opis_Produktu = dto.Opis_Produktu;
+    nowyTowar.Cena_Netto_Za_Sztuke = dto.Cena_Netto_Za_Sztuke;
+    nowyTowar.Ilosc = dto.Ilosc;
 
-    Firma? firma = db.Firmas.FirstOrDefault(x => x.Id == dto.FirmaId);
-
+    Firma? firma = db.Firmas.FirstOrDefault(x => x.Id == dto.Id_Firmy);
+    Magazyn? magazyn = db.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
+    
     nowyTowar.Firma = firma;
+    nowyTowar.Magazyn = magazyn;
+
+    db.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu).Towary.Add(nowyTowar);
 
     db.Towars.Add(nowyTowar);
     await db.SaveChangesAsync();

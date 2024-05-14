@@ -19,7 +19,7 @@ namespace Magazynex_console
 
         public int Id { get; set; }
         public  List<Pracownik> Pracownicy { get; set; }
-        public List<Towar> Towray { get; set; }
+        public List<Towar> Towary { get; set; }
         public string? lokalizacja { get; set; }
         public int? Mozliwosc_Pechowywania_Materialow { get; set; }
 
