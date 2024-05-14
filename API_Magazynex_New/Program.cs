@@ -42,8 +42,9 @@ app.MapGet("/firmas/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var firmaItem = await db.Firmas.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
 
-    return firmaItem != null ? Results.Ok(firmaItem) : Results.NotFound();
+    return firmaItem.Nazwa != null ? Results.Ok(firmaItem.Nazwa) : Results.NotFound();
 });
+
 
 app.MapPost("/firmas", async (Firma todo, DatabaseContext db) =>
 {
@@ -141,11 +142,18 @@ app.MapGet("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, DatabaseCon
     return towarItem != null ? Results.Ok(towarItem) : Results.NotFound();
 });
 
-app.MapPost("/towars", async (Towar towar, DatabaseContext db) =>
+app.MapPost("/towars", async (TowarCreateDTO dto, DatabaseContext db) =>
 {
-    db.Towars.Add(towar);
+    Towar nowyTowar = new Towar();
+    nowyTowar.Nazwa_Produktu = dto.Nazwa_Produktu;
+
+    Firma? firma = db.Firmas.FirstOrDefault(x => x.Id == dto.FirmaId);
+
+    nowyTowar.Firma = firma;
+
+    db.Towars.Add(nowyTowar);
     await db.SaveChangesAsync();
-    return Results.Created($"/towars/{towar.Nazwa_Produktu}", towar);
+    return Results.Created($"/towars/{nowyTowar.Nazwa_Produktu}", nowyTowar);
 });
 
 app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, DatabaseContext db) =>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -10,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace Magazynex_console
 {
-    [Keyless]
     public class Towar
     { 
         public Firma? Firma { get; set; }
         public  Magazyn? Magazyn { get; set; }
+        [Key]
+        public int id { get; set; }
         public string? Opis_Produktu { get; set; }
         public string? Klasa_Towarow_Niebezpiecznych { get; set; }
         public float? Cena_Netto_Za_Sztuke { get; set; }
