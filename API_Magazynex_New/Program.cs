@@ -6,10 +6,12 @@ using Namotion.Reflection;
 using NSwag.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("Magazynex"));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>

@@ -19,4 +19,5 @@ public class DatabaseContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
+    
 }

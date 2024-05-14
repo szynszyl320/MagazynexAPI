@@ -12,5 +12,14 @@ namespace API_Magazynex_New
                .WithOne(x => x.Magazyn)
                .HasForeignKey(x => x.MagazynId);
         }
+    
+        public void Configura(EntityTypeBuilder<Magazyn> builder)
+        {
+            builder.HasMany(x => x.Pracownicy)
+                .WithOne(x => x.Magazyn);
+        }
     }
+    
+
 }
+
