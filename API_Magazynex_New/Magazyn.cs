@@ -14,6 +14,7 @@ namespace Magazynex_console
         public Magazyn()
         {
             Pracownicy = new List<Pracownik>();
+            Towary = new List<Towar>(); 
 
         }
 

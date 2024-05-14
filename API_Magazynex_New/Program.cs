@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("Magazynex"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
 {
@@ -101,7 +103,8 @@ app.MapGet("/magazyns", async (DatabaseContext db) =>
 app.MapGet("/magazyns/{Nazwa}", async (string Nazwa, DatabaseContext db) =>
 {
     var magazynItem = await db.magazyns.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
-    return magazynItem != null ? Results.Ok(magazynItem) : Results.NotFound();
+
+    return magazynItem != null ? Results.Ok(new MagazynSimpleDTO(magazynItem)) : Results.NotFound();
 });
 
 app.MapPost("/magazyns", async (MagazynCreateDTO dto, DatabaseContext db) =>
@@ -168,12 +171,14 @@ app.MapPost("/towars", async (TowarCreateDTO dto, DatabaseContext db) =>
     
     nowyTowar.Firma = firma;
     nowyTowar.Magazyn = magazyn;
+    nowyTowar.MagazynId = magazyn.Id;
+    
 
-    db.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu).Towary.Add(nowyTowar);
+    //db.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu).Towary.Add(nowyTowar);
 
     db.Towars.Add(nowyTowar);
     await db.SaveChangesAsync();
-    return Results.Created($"/towars/{nowyTowar.Nazwa_Produktu}", nowyTowar);
+    return Results.Created($"/towars/{nowyTowar.Nazwa_Produktu}", new TowarySimpleDTO(nowyTowar));
 });
 
 app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, DatabaseContext db) =>

@@ -14,7 +14,9 @@ namespace Magazynex_console
     public class Towar
     { 
         public Firma? Firma { get; set; }
-        public  Magazyn? Magazyn { get; set; }
+
+        public int MagazynId { get; set; }
+        public  Magazyn Magazyn { get; set; }
         [Key]
         public int id { get; set; }
         public string? Opis_Produktu { get; set; }
