@@ -16,6 +16,7 @@ namespace API_Magazynex_New.Encje
         public int Id { get; set; }
         public int Numer_Telefonu { get; set; }
         public Magazyn? Magazyn { get; set; }
+        public int MagazynId { get; set; }  
 
         public bool Assign_Name(string name)
         {

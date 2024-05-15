@@ -16,7 +16,6 @@ namespace API_Magazynex_New.Encje
 
         public int MagazynId { get; set; }
         public Magazyn Magazyn { get; set; }
-        [Key]
         public int id { get; set; }
         public string? Opis_Produktu { get; set; }
         public string? Klasa_Towarow_Niebezpiecznych { get; set; }

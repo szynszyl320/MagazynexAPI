@@ -13,7 +13,8 @@ namespace API_Magazynex_New.Configs
                .HasForeignKey(x => x.MagazynId);
 
             builder.HasMany(x => x.Pracownicy)
-                .WithOne(x => x.Magazyn);
+                .WithOne(x => x.Magazyn)
+                .HasForeignKey(x => x.MagazynId);
 
             builder.HasKey(x => x.Id);
 

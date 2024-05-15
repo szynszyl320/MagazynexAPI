@@ -20,6 +20,10 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Firma>(_ => new FirmaConfiguration());
 
+        modelBuilder.Entity<Pracownik>(_ => new PracownikConfiguration());
+
+        modelBuilder.Entity<Towar>(_ => new TowarConfiguration());
+
         base.OnModelCreating(modelBuilder);
     }
     
