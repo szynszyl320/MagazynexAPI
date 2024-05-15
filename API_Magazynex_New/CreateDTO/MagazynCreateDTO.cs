@@ -1,4 +1,4 @@
-﻿namespace API_Magazynex_New
+﻿namespace API_Magazynex_New.CreateDTO
 {
     public class MagazynCreateDTO
     {

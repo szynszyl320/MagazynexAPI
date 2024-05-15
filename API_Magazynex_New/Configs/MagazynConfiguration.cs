@@ -1,8 +1,8 @@
-﻿using Magazynex_console;
+﻿using API_Magazynex_New.Encje;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace API_Magazynex_New
+namespace API_Magazynex_New.Configs
 {
     public class MagazynConfiguration : IEntityTypeConfiguration<Magazyn>
     {
@@ -11,15 +11,20 @@ namespace API_Magazynex_New
             builder.HasMany(x => x.Towary)
                .WithOne(x => x.Magazyn)
                .HasForeignKey(x => x.MagazynId);
-        }
-    
-        public void Configura(EntityTypeBuilder<Magazyn> builder)
-        {
+
             builder.HasMany(x => x.Pracownicy)
                 .WithOne(x => x.Magazyn);
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Nazwa).IsRequired();
+            
+            builder.Property(x => x.lokalizacja).IsRequired();
+            
+            builder.Property(x => x.Mozliwosc_Pechowywania_Materialow).IsRequired();
         }
     }
-    
+
 
 }
 

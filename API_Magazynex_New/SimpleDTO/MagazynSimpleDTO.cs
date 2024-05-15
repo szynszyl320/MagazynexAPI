@@ -1,7 +1,7 @@
-﻿using Magazynex_console;
+﻿using API_Magazynex_New.Encje;
 
-namespace API_Magazynex_New
-{   
+namespace API_Magazynex_New.SimpleDTO
+{
     public class MagazynSimpleDTO
     {
         public MagazynSimpleDTO(Magazyn magazyn)

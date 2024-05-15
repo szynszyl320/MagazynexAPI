@@ -1,5 +1,4 @@
-﻿using Magazynex_console;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -9,14 +8,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magazynex_console
+namespace API_Magazynex_New.Encje
 {
     public class Towar
-    { 
+    {
         public Firma? Firma { get; set; }
 
         public int MagazynId { get; set; }
-        public  Magazyn Magazyn { get; set; }
+        public Magazyn Magazyn { get; set; }
         [Key]
         public int id { get; set; }
         public string? Opis_Produktu { get; set; }
@@ -24,18 +23,18 @@ namespace Magazynex_console
         public float? Cena_Netto_Za_Sztuke { get; set; }
         public int? Ilosc { get; set; }
         public string? Nazwa_Produktu { get; set; }
-    
+
 
         public void Assing_Desc(string Description)
         {
             Opis_Produktu = Description;
         }
-    
+
         public void Assing_Class(string Klasa)
         {
             Klasa_Towarow_Niebezpiecznych = Klasa;
         }
-    
+
         public void Assing_Price(string Price)
         {
             Cena_Netto_Za_Sztuke = float.Parse(Price);
@@ -44,7 +43,7 @@ namespace Magazynex_console
         public bool Assing_Amount(string Amound)
         {
             int Amount = int.Parse(Amound);
-            if (Amount < 1) 
+            if (Amount < 1)
             {
                 return false;
             }

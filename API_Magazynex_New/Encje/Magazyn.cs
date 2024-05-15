@@ -1,5 +1,4 @@
-﻿using Magazynex_console;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magazynex_console
+namespace API_Magazynex_New.Encje
 {
     public class Magazyn
     {
         public Magazyn()
         {
             Pracownicy = new List<Pracownik>();
-            Towary = new List<Towar>(); 
+            Towary = new List<Towar>();
 
         }
 
         public int Id { get; set; }
-        public  List<Pracownik> Pracownicy { get; set; }
+        public List<Pracownik> Pracownicy { get; set; }
         public List<Towar> Towary { get; set; }
         public string? lokalizacja { get; set; }
         public int? Mozliwosc_Pechowywania_Materialow { get; set; }

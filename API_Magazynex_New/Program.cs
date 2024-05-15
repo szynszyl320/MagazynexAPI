@@ -1,5 +1,8 @@
 using API_Magazynex_New;
-using Magazynex_console;
+using API_Magazynex_New.Encje;
+using API_Magazynex_New.SimpleDTO;
+using API_Magazynex_New.CreateDTO;
+using API_Magazynex_New.Configs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Namotion.Reflection;

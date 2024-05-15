@@ -1,7 +1,8 @@
 ﻿using API_Magazynex_New;
-using Magazynex_console;
+using API_Magazynex_New.Encje;
 using Microsoft.EntityFrameworkCore;
 using System;
+using API_Magazynex_New.Configs;
 
 public class DatabaseContext : DbContext
 {
@@ -17,7 +18,11 @@ public class DatabaseContext : DbContext
     {
         modelBuilder.Entity<Magazyn>(_ => new MagazynConfiguration());
 
+        modelBuilder.Entity<Firma>(_ => new FirmaConfiguration());
+
         base.OnModelCreating(modelBuilder);
     }
     
+  
+
 }

@@ -1,5 +1,4 @@
-﻿using Magazynex_console;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magazynex_console
+namespace API_Magazynex_New.Encje
 {
     public class Pracownik
     {
@@ -19,7 +18,7 @@ namespace Magazynex_console
         public Magazyn? Magazyn { get; set; }
 
         public bool Assign_Name(string name)
-        { 
+        {
             if (name.Length < 2)
             {
                 return false;
@@ -29,7 +28,7 @@ namespace Magazynex_console
                 Imie = name;
                 return true;
             }
-            
+
         }
 
         public bool Assign_Surname(string Surname)
