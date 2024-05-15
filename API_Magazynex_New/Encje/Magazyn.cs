@@ -21,7 +21,7 @@ namespace API_Magazynex_New.Encje
         public List<Pracownik> Pracownicy { get; set; }
         public List<Towar> Towary { get; set; }
         public string? lokalizacja { get; set; }
-        public int? Mozliwosc_Pechowywania_Materialow { get; set; }
+        public string? Mozliwosc_Pechowywania_Materialow { get; set; }
 
         public string? Nazwa { get; set; }
 

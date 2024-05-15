@@ -14,7 +14,14 @@ namespace API_Magazynex_New.Configs
                 .HasMaxLength(64)
                 .IsRequired();
             builder.Property(x => x.Numer_Telefonu).IsRequired();
+        
+            builder.HasMany(x => x.towars)
+                .WithOne(x => x.Firma)
+                .HasForeignKey(x => x.FirmaId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
+
 
         void IEntityTypeConfiguration<Firma>.Configure(EntityTypeBuilder<Firma> builder)
         {

@@ -20,6 +20,7 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Stanowisko).IsRequired();
 
             builder.Property(x => x.Numer_Telefonu).IsRequired();
+            
         }
         
         

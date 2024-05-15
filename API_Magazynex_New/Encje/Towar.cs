@@ -12,10 +12,10 @@ namespace API_Magazynex_New.Encje
 {
     public class Towar
     {
+        public int? FirmaId { get; set; }
         public Firma? Firma { get; set; }
-
-        public int MagazynId { get; set; }
-        public Magazyn Magazyn { get; set; }
+        public int? MagazynId { get; set; }
+        public Magazyn? Magazyn { get; set; }
         public int id { get; set; }
         public string? Opis_Produktu { get; set; }
         public string? Klasa_Towarow_Niebezpiecznych { get; set; }

@@ -10,11 +10,13 @@ namespace API_Magazynex_New.Configs
         {
             builder.HasMany(x => x.Towary)
                .WithOne(x => x.Magazyn)
-               .HasForeignKey(x => x.MagazynId);
+               .HasForeignKey(x => x.MagazynId)
+               .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(x => x.Pracownicy)
                 .WithOne(x => x.Magazyn)
-                .HasForeignKey(x => x.MagazynId);
+                .HasForeignKey(x => x.MagazynId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasKey(x => x.Id);
 

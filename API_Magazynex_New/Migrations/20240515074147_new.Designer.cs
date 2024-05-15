@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240515074147_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +53,8 @@ namespace API_Magazynex_New.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Mozliwosc_Pechowywania_Materialow")
-                        .HasColumnType("longtext");
+                    b.Property<int?>("Mozliwosc_Pechowywania_Materialow")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("longtext");
@@ -144,7 +147,7 @@ namespace API_Magazynex_New.Migrations
             modelBuilder.Entity("API_Magazynex_New.Encje.Towar", b =>
                 {
                     b.HasOne("API_Magazynex_New.Encje.Firma", "Firma")
-                        .WithMany("towars")
+                        .WithMany()
                         .HasForeignKey("FirmaId");
 
                     b.HasOne("API_Magazynex_New.Encje.Magazyn", "Magazyn")
@@ -154,11 +157,6 @@ namespace API_Magazynex_New.Migrations
                     b.Navigation("Firma");
 
                     b.Navigation("Magazyn");
-                });
-
-            modelBuilder.Entity("API_Magazynex_New.Encje.Firma", b =>
-                {
-                    b.Navigation("towars");
                 });
 
             modelBuilder.Entity("API_Magazynex_New.Encje.Magazyn", b =>
