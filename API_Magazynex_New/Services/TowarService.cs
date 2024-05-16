@@ -33,7 +33,7 @@ namespace API_Magazynex_New.Services
             nowyTowar.Ilosc = dto.Ilosc;
 
             Firma? firma = _dbContext.Firmas.FirstOrDefault(x => x.Id == dto.Id_Firmy);
-            Magazyn? magazyn = _dbContext.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
+            Magazyn? magazyn = _dbContext.Magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
 
             nowyTowar.Firma = firma;
             nowyTowar.Magazyn = magazyn;

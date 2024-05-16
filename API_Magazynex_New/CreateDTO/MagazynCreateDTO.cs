@@ -16,6 +16,7 @@
             Corrosive_Materials,
             Doesnt_Fit_In_Another_Category
         }
+
         public string? Nazwa { get; set; }
     }
 }

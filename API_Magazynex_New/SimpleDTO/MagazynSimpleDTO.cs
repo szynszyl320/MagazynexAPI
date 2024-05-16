@@ -12,10 +12,15 @@ namespace API_Magazynex_New.SimpleDTO
             {
                 Towaries.Add(new TowarySimpleDTO(towar));
             }
+            foreach (var pracownik in magazyn.Pracownicy)
+            {
+                Pracowniks.Add(new PracownikSimpleDTO(pracownik));
+            }
         }
 
         public int Id { get; set; }
         public string? Nazwa { get; set; }
         public List<TowarySimpleDTO> Towaries { get; set; } = new List<TowarySimpleDTO>();
+        public List<PracownikSimpleDTO> Pracowniks { get; set; } = new List<PracownikSimpleDTO>();
     }
 }

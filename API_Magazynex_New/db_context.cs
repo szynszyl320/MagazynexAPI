@@ -12,7 +12,7 @@ public class DatabaseContext : DbContext
     public DbSet<Firma> Firmas => Set<Firma>();
     public DbSet<Pracownik> Pracowniks => Set<Pracownik>();
     public DbSet<Towar> Towars => Set<Towar>();
-    public DbSet<Magazyn> magazyns => Set<Magazyn>();
+    public DbSet<Magazyn> Magazyns => Set<Magazyn>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,6 +24,9 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Towar>(_ => new TowarConfiguration());
 
+        modelBuilder.Entity<Firma>().HasQueryFilter(x => x.IsActive);
+
+        modelBuilder.Entity<Magazyn>().HasQueryFilter(x => x.IsActive);
 
         base.OnModelCreating(modelBuilder);
     }

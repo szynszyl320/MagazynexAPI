@@ -62,7 +62,7 @@ app.MapGet("/firmas/{Id}", async (int Id, FirmaService firmaService) =>
 
 app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
 {
-    var firmareturn = firmaService.CreateNewFirma(dto);
+    var firmareturn = await firmaService.CreateNewFirma(dto);
     return Results.Created($"/firmas/{firmareturn.Id}", firmareturn);
 });
 
@@ -227,14 +227,5 @@ app.MapDelete("/pracownik/{Id}", async (int Id, PracownikService pracownikServic
         return Results.NotFound();
     }
 });
-
-
-
-
-
-
-
-
-
 
 app.Run();

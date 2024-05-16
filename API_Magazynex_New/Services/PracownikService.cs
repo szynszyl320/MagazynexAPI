@@ -33,11 +33,14 @@ namespace API_Magazynex_New.Services
             pracownik.Stanowisko = dto.Stanowisko;
             pracownik.Numer_Telefonu = dto.Numer_Telefonu;
             
-            Magazyn? magazyn = _dbContext.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
+            Magazyn? magazyn = _dbContext.Magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
 
             pracownik.Magazyn = magazyn;
             pracownik.MagazynId = magazyn.Id;
-
+            
+            _dbContext.Pracowniks.Add(pracownik);
+            await _dbContext.SaveChangesAsync();
+            
             return new PracownikSimpleDTO(pracownik);
         }
 

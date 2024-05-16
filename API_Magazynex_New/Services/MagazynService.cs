@@ -15,14 +15,14 @@ namespace API_Magazynex_New.Services
 
         public async Task<List<MagazynSimpleDTO>> MagazynGetAll()
         {
-            var magazynitems = await _dbContext.magazyns.Include(x => x.Towary).ToListAsync();
+            var magazynitems = await _dbContext.Magazyns.Include(x => x.Towary).Include(x=>x.Pracownicy).ToListAsync();
 
             return magazynitems.Select(x => new MagazynSimpleDTO(x)).ToList();
         }
     
         public async Task<MagazynSimpleDTO> MagazynGetSpecific(int Id)
         {
-            return new MagazynSimpleDTO(_dbContext.magazyns.Include(x => x.Towary).FirstOrDefault(x => x.Id == Id));
+            return new MagazynSimpleDTO(_dbContext.Magazyns.Include(x => x.Towary).Include(x => x.Pracownicy).FirstOrDefault(x => x.Id == Id));
         }
     
     
@@ -33,8 +33,9 @@ namespace API_Magazynex_New.Services
             magazyn.lokalizacja = dto.lokalizacja;
             magazyn.Towary = new List<Towar>();
             magazyn.Pracownicy = new List<Pracownik>();
-            
-            _dbContext.magazyns.Add(magazyn);
+
+
+            _dbContext.Magazyns.Add(magazyn);
             await _dbContext.SaveChangesAsync();
         
             return(new MagazynSimpleDTO(magazyn));
@@ -42,7 +43,7 @@ namespace API_Magazynex_New.Services
 
         public async Task<bool> DeleteMagazyn(int Id)
         {
-            var magazynItem = await _dbContext.magazyns.FirstOrDefaultAsync(f => f.Id == Id);
+            var magazynItem = await _dbContext.Magazyns.FirstOrDefaultAsync(f => f.Id == Id);
 
             if (magazynItem != null)
             {

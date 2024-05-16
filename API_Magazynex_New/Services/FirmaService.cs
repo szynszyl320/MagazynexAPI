@@ -16,13 +16,13 @@ namespace API_Magazynex_New.Services
         
         public async Task<List<FirmaSimpleDTO>> FirmaGetAll()
         {
-            var firmaItems = await _dbContext.Firmas.Include(x => x.towars).ToListAsync();
+            var firmaItems = await _dbContext.Firmas.Include(x => x.Towars).ToListAsync();
             return firmaItems.Select(x => new FirmaSimpleDTO(x)).ToList();
         }
 
         public async Task<FirmaSimpleDTO>  FirmaGetSpecific(int Id)
         {
-            return new FirmaSimpleDTO(_dbContext.Firmas.Include(x => x.towars).FirstOrDefault(x => x.Id == Id));
+            return new FirmaSimpleDTO(_dbContext.Firmas.Include(x => x.Towars).FirstOrDefault(x => x.Id == Id));
         }
     
         public async Task<FirmaSimpleDTO> CreateNewFirma(FirmaCreateDTO dto)
@@ -30,7 +30,7 @@ namespace API_Magazynex_New.Services
             Firma firma = new Firma();
             
             firma.Nazwa = dto.Nazwa;
-            firma.Assing_Phone_Number(dto.Numer_Telefonu);
+            firma.Numer_Telefonu = dto.Numer_Telefonu;
 
             _dbContext.Firmas.Add(firma);
             await _dbContext.SaveChangesAsync();

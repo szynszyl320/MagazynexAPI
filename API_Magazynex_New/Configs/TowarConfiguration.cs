@@ -22,7 +22,7 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Ilosc).IsRequired();
 
             builder.HasOne(x => x.Firma)
-                .WithMany(x => x.towars)
+                .WithMany(x => x.Towars)
                 .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
         }

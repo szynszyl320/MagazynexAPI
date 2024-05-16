@@ -27,7 +27,7 @@ namespace API_Magazynex_New.Configs
 
             builder.Property(x => x.IsActive).IsRequired();
 
-            builder.HasQueryFilter(x => !x.IsActive);
+            //builder.HasQueryFilter(x => x.IsActive);
 
         }
     }

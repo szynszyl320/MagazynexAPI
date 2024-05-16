@@ -8,7 +8,7 @@ namespace API_Magazynex_New.SimpleDTO
         {
             Id = firma.Id;
             Name = firma.Nazwa;
-            foreach (var towar in firma.towars)
+            foreach (var towar in firma.Towars)
             {
                 Towaries.Add(new TowarySimpleDTO(towar));
             }

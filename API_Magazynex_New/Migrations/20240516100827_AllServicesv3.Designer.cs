@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240516100827_AllServicesv3")]
+    partial class AllServicesv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +151,7 @@ namespace API_Magazynex_New.Migrations
             modelBuilder.Entity("API_Magazynex_New.Encje.Towar", b =>
                 {
                     b.HasOne("API_Magazynex_New.Encje.Firma", "Firma")
-                        .WithMany("Towars")
+                        .WithMany("towars")
                         .HasForeignKey("FirmaId");
 
                     b.HasOne("API_Magazynex_New.Encje.Magazyn", "Magazyn")
@@ -162,7 +165,7 @@ namespace API_Magazynex_New.Migrations
 
             modelBuilder.Entity("API_Magazynex_New.Encje.Firma", b =>
                 {
-                    b.Navigation("Towars");
+                    b.Navigation("towars");
                 });
 
             modelBuilder.Entity("API_Magazynex_New.Encje.Magazyn", b =>

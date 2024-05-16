@@ -15,13 +15,13 @@ namespace API_Magazynex_New.Configs
                 .IsRequired();
             builder.Property(x => x.Numer_Telefonu).IsRequired();
 
-            builder.HasMany(x => x.towars)
+            builder.HasMany(x => x.Towars)
                 .WithOne(x => x.Firma)
                 .HasForeignKey(x => x.FirmaId);
 
             builder.Property(x => x.IsActive).IsRequired();
 
-            builder.HasQueryFilter(x => x.IsActive);
+            //builder.HasQueryFilter(x => x.IsActive);
         }
     }
 }
