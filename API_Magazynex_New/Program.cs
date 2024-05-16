@@ -21,6 +21,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 builder.Services.AddScoped<MagazynService>();
 builder.Services.AddScoped<FirmaService>();
+builder.Services.AddScoped<PracownikService>();
 builder.Services.AddScoped<TowarService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -142,33 +143,19 @@ app.MapGet("/towars", async (TowarService towarService) =>
     return Results.Ok(await towarService.TowaryGetAll());
 });
 
-app.MapGet("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, DatabaseContext db) =>
+app.MapGet("/towars/{id}", async (int Id, TowarService towarService) =>
 {
-    var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
-    return towarItem != null ? Results.Ok(towarItem) : Results.NotFound();
+    var returntowar = await towarService.TowarGetSpecific(Id);
+    return returntowar != null ? Results.Ok(returntowar) : Results.NotFound();
 });
 
-app.MapPost("/towars", async (TowarCreateDTO dto, DatabaseContext db) =>
+app.MapPost("/towars", async (TowarCreateDTO dto, TowarService towarService) =>
 {
-    Towar nowyTowar = new Towar();
-    nowyTowar.Nazwa_Produktu = dto.Nazwa_Produktu;
-    nowyTowar.Opis_Produktu = dto.Opis_Produktu;
-    nowyTowar.Cena_Netto_Za_Sztuke = dto.Cena_Netto_Za_Sztuke;
-    nowyTowar.Ilosc = dto.Ilosc;
-
-    Firma? firma = db.Firmas.FirstOrDefault(x => x.Id == dto.Id_Firmy);
-    Magazyn? magazyn = db.magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
-    
-    nowyTowar.Firma = firma;
-    nowyTowar.Magazyn = magazyn;
-    nowyTowar.MagazynId = magazyn.Id;
-    
-    db.Towars.Add(nowyTowar);
-    await db.SaveChangesAsync();
-    return Results.Created($"/towars/{nowyTowar.Nazwa_Produktu}", new TowarySimpleDTO(nowyTowar));
+    var returntowar = await towarService.CreateNewTowar(dto);
+    return Results.Created($"/towars/{returntowar.name}", returntowar);
 });
 
-app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, DatabaseContext db) =>
+/*app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, DatabaseContext db) =>
 {
     var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
     if (towarItem is null) return Results.NotFound();
@@ -182,41 +169,40 @@ app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar input
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-
-app.MapDelete("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, DatabaseContext db) =>
+*/
+app.MapDelete("/towars/{id}", async (int Id, TowarService towarService) =>
 {
-    var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
-    if (towarItem != null)
-    {
-        db.Towars.Remove(towarItem);
-        await db.SaveChangesAsync();
+    if (await towarService.DeleteTowar(Id))
+    { 
         return Results.NoContent();
     }
-    return Results.NotFound();
+    else
+    { 
+        return Results.NotFound(); 
+    }
+   
 });
 
 // Pracownik
 
-app.MapGet("/pracowniks", async (DatabaseContext db) =>
+app.MapGet("/pracowniks", async (PracownikService pracownikService) =>
 {
-    var PracownikItem = await db.Pracowniks.ToListAsync();
-    return Results.Ok(PracownikItem);
+    return Results.Ok(await pracownikService.PracownikGetAll());
 });
 
-app.MapGet("/pracowniks/{Imie}", async (string Imie, DatabaseContext db) =>
+app.MapGet("/pracowniks/{Id}", async (int Id, PracownikService pracownikService) =>
 {
-    var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
-    return pracownikItem != null ? Results.Ok(pracownikItem) : Results.NotFound();
+    var returnpracownik = await pracownikService.PracownikGetSpecific(Id);
+    return returnpracownik != null ? Results.Ok(returnpracownik) : Results.NotFound();
 });
 
-app.MapPost("/pracowniks/", async (Pracownik pracownik, DatabaseContext db) =>
+app.MapPost("/pracowniks", async (PracownikCreateDTO dto, PracownikService pracownikService) =>
 {
-    db.Pracowniks.Add(pracownik);
-    await db.SaveChangesAsync();
-    return Results.Created($"/pracowniks/{pracownik.Imie}", pracownik);
+    var returnpracownik = await pracownikService.CreateNewPracownik(dto);
+    return Results.Created($"/towars/{returnpracownik.Imie}", returnpracownik);
 });
 
-app.MapPut("/pracowniks/{Imie}", async (string Imie, Pracownik inputPracownik, DatabaseContext db) =>
+/*app.MapPut("/pracowniks/{Imie}", async (string Imie, Pracownik inputPracownik, DatabaseContext db) =>
 {
     var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
     if (pracownikItem is null) return Results.NotFound();
@@ -228,17 +214,18 @@ app.MapPut("/pracowniks/{Imie}", async (string Imie, Pracownik inputPracownik, D
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
+*/
 
-app.MapDelete("/pracowniks/{Imie}", async (string Imie, DatabaseContext db) =>
+app.MapDelete("/pracownik/{Id}", async (int Id, PracownikService pracownikService) =>
 {
-    var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
-    if (pracownikItem != null)
+    if (await pracownikService.DeletePracownik(Id))
     {
-        db.Pracowniks.Remove(pracownikItem);
-        await db.SaveChangesAsync();
         return Results.NoContent();
     }
-    return Results.NotFound();
+    else
+    {
+        return Results.NotFound();
+    }
 });
 
 

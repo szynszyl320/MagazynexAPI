@@ -1,6 +1,7 @@
 ﻿using API_Magazynex_New.Encje;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Namotion.Reflection;
 
 namespace API_Magazynex_New.Configs
 {
@@ -23,6 +24,8 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Nazwa).IsRequired();
             
             builder.Property(x => x.lokalizacja).IsRequired();
+
+            builder.Property(x => x.IsActive).IsRequired();
 
             builder.HasQueryFilter(x => !x.IsActive);
 

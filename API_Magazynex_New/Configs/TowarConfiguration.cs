@@ -25,8 +25,6 @@ namespace API_Magazynex_New.Configs
                 .WithMany(x => x.towars)
                 .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
-
-            builder.HasQueryFilter(x => x.IsActive == false);
         }
 
 
