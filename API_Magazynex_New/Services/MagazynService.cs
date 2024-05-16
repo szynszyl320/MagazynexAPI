@@ -1,4 +1,6 @@
-﻿using API_Magazynex_New.SimpleDTO;
+﻿using API_Magazynex_New.CreateDTO;
+using API_Magazynex_New.Encje;
+using API_Magazynex_New.SimpleDTO;
 
 namespace API_Magazynex_New.Services
 {
@@ -17,5 +19,41 @@ namespace API_Magazynex_New.Services
 
             return magazynitems.Select(x => new MagazynSimpleDTO(x)).ToList();
         }
+    
+        public async Task<MagazynSimpleDTO> MagazynGetSpecific(int Id)
+        {
+            return new MagazynSimpleDTO(_dbContext.magazyns.Include(x => x.Towary).FirstOrDefault(x => x.Id == Id));
+        }
+    
+    
+        public async Task<MagazynSimpleDTO> CreateNewMagazyn(MagazynCreateDTO dto)
+        {
+            Magazyn magazyn = new Magazyn();
+            magazyn.Nazwa = dto.Nazwa;
+            magazyn.lokalizacja = dto.lokalizacja;
+            magazyn.Towary = new List<Towar>();
+            magazyn.Pracownicy = new List<Pracownik>();
+            
+            _dbContext.magazyns.Add(magazyn);
+            await _dbContext.SaveChangesAsync();
+        
+            return(new MagazynSimpleDTO(magazyn));
+        }
+
+        public async Task<bool> DeleteMagazyn(int Id)
+        {
+            var magazynItem = await _dbContext.magazyns.FirstOrDefaultAsync(f => f.Id == Id);
+
+            if (magazynItem != null)
+            {
+                magazynItem.IsActive = false;
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+
     }
 }

@@ -20,12 +20,16 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Cena_Netto_Za_Sztuke).IsRequired();
 
             builder.Property(x => x.Ilosc).IsRequired();
+
+            builder.HasOne(x => x.Firma)
+                .WithMany(x => x.towars)
+                .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired(false);
+
+            builder.HasQueryFilter(x => x.IsActive == false);
         }
-        
-        
-        void IEntityTypeConfiguration<Towar>.Configure(EntityTypeBuilder<Towar> builder)
-        {
-            throw new NotImplementedException();
-        }
+
+
+
     }
 }

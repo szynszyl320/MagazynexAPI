@@ -18,7 +18,6 @@ namespace API_Magazynex_New.Services
         {
             var firmaItems = await _dbContext.Firmas.Include(x => x.towars).ToListAsync();
             return firmaItems.Select(x => new FirmaSimpleDTO(x)).ToList();
-
         }
 
         public async Task<FirmaSimpleDTO>  FirmaGetSpecific(int Id)
@@ -46,7 +45,7 @@ namespace API_Magazynex_New.Services
 
             if (firmaItem != null)
             {
-                _dbContext.Firmas.Remove(firmaItem);
+                firmaItem.IsActive = false;
                 await _dbContext.SaveChangesAsync();
                 return true;
             }

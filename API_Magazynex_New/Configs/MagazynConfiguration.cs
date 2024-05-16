@@ -23,8 +23,9 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Nazwa).IsRequired();
             
             builder.Property(x => x.lokalizacja).IsRequired();
-            
-            builder.Property(x => x.Mozliwosc_Pechowywania_Materialow).IsRequired();
+
+            builder.HasQueryFilter(x => !x.IsActive);
+
         }
     }
 

@@ -24,6 +24,7 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Towar>(_ => new TowarConfiguration());
 
+
         base.OnModelCreating(modelBuilder);
     }
     

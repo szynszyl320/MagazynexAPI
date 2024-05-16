@@ -20,10 +20,11 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Stanowisko).IsRequired();
 
             builder.Property(x => x.Numer_Telefonu).IsRequired();
-            
+
+            builder.HasQueryFilter(x => x.IsActive == false);
         }
-        
-        
+
+
         void IEntityTypeConfiguration<Pracownik>.Configure(EntityTypeBuilder<Pracownik> builder)
         {
             throw new NotImplementedException();

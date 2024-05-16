@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240515091105_testerrrrr")]
-    partial class testerrrrr
+    [Migration("20240516072840_SoftDelete")]
+    partial class SoftDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace API_Magazynex_New.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
@@ -53,8 +56,8 @@ namespace API_Magazynex_New.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Mozliwosc_Pechowywania_Materialow")
-                        .HasColumnType("longtext");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("longtext");
@@ -77,6 +80,9 @@ namespace API_Magazynex_New.Migrations
 
                     b.Property<string>("Imie")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("MagazynId")
                         .HasColumnType("int");
@@ -113,6 +119,9 @@ namespace API_Magazynex_New.Migrations
 
                     b.Property<int?>("Ilosc")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Klasa_Towarow_Niebezpiecznych")
                         .HasColumnType("longtext");

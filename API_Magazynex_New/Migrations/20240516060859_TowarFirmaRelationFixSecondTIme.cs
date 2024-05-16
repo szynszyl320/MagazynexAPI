@@ -5,7 +5,7 @@
 namespace API_Magazynex_New.Migrations
 {
     /// <inheritdoc />
-    public partial class testerr : Migration
+    public partial class TowarFirmaRelationFixSecondTIme : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -23,7 +23,6 @@ namespace API_Magazynex_New.Encje
         public int? Ilosc { get; set; }
         public string? Nazwa_Produktu { get; set; }
 
-
         public void Assing_Desc(string Description)
         {
             Opis_Produktu = Description;

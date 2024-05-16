@@ -5,7 +5,7 @@
 namespace API_Magazynex_New.Migrations
 {
     /// <inheritdoc />
-    public partial class testerrr : Migration
+    public partial class SoftDeleteWorkingThisTime : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

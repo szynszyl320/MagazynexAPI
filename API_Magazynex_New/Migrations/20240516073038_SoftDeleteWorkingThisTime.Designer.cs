@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240515084946_testerrr")]
-    partial class testerrr
+    [Migration("20240516073038_SoftDeleteWorkingThisTime")]
+    partial class SoftDeleteWorkingThisTime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace API_Magazynex_New.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
@@ -53,8 +56,8 @@ namespace API_Magazynex_New.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Mozliwosc_Pechowywania_Materialow")
-                        .HasColumnType("longtext");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("longtext");
@@ -77,6 +80,9 @@ namespace API_Magazynex_New.Migrations
 
                     b.Property<string>("Imie")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("MagazynId")
                         .HasColumnType("int");
@@ -108,14 +114,14 @@ namespace API_Magazynex_New.Migrations
                     b.Property<float?>("Cena_Netto_Za_Sztuke")
                         .HasColumnType("float");
 
-                    b.Property<int?>("FimraId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("FirmaId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Ilosc")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Klasa_Towarow_Niebezpiecznych")
                         .HasColumnType("longtext");

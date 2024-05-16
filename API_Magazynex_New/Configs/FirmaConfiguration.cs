@@ -7,25 +7,19 @@ namespace API_Magazynex_New.Configs
 {
     public class FirmaConfiguration : IEntityTypeConfiguration<Firma>
     {
-        public void configuration(EntityTypeBuilder<Firma> builder)
+        public void Configure(EntityTypeBuilder<Firma> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Nazwa)
                 .HasMaxLength(64)
                 .IsRequired();
             builder.Property(x => x.Numer_Telefonu).IsRequired();
-        
+
             builder.HasMany(x => x.towars)
                 .WithOne(x => x.Firma)
-                .HasForeignKey(x => x.FirmaId)
-                .OnDelete(DeleteBehavior.Cascade);
-        }
+                .HasForeignKey(x => x.FirmaId);
 
-
-
-        void IEntityTypeConfiguration<Firma>.Configure(EntityTypeBuilder<Firma> builder)
-        {
-            throw new NotImplementedException();
+            builder.HasQueryFilter(x => x.IsActive);
         }
     }
 }

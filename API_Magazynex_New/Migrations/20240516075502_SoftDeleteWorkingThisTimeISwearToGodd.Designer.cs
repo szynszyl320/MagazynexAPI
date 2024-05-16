@@ -11,20 +11,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240515051720_Inital")]
-    partial class Inital
+    [Migration("20240516075502_SoftDeleteWorkingThisTimeISwearToGodd")]
+    partial class SoftDeleteWorkingThisTimeISwearToGodd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Magazynex_console.Firma", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Firma", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,10 +32,15 @@ namespace API_Magazynex_New.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Nazwa")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Numer_Telefonu")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -43,7 +48,7 @@ namespace API_Magazynex_New.Migrations
                     b.ToTable("Firmas");
                 });
 
-            modelBuilder.Entity("Magazynex_console.Magazyn", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Magazyn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,8 +56,8 @@ namespace API_Magazynex_New.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Mozliwosc_Pechowywania_Materialow")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nazwa")
                         .HasColumnType("longtext");
@@ -65,7 +70,7 @@ namespace API_Magazynex_New.Migrations
                     b.ToTable("magazyns");
                 });
 
-            modelBuilder.Entity("Magazynex_console.Pracownik", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Pracownik", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,6 +80,9 @@ namespace API_Magazynex_New.Migrations
 
                     b.Property<string>("Imie")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("MagazynId")
                         .HasColumnType("int");
@@ -95,7 +103,7 @@ namespace API_Magazynex_New.Migrations
                     b.ToTable("Pracowniks");
                 });
 
-            modelBuilder.Entity("Magazynex_console.Towar", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Towar", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -112,10 +120,13 @@ namespace API_Magazynex_New.Migrations
                     b.Property<int?>("Ilosc")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Klasa_Towarow_Niebezpiecznych")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("MagazynId")
+                    b.Property<int?>("MagazynId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nazwa_Produktu")
@@ -133,33 +144,36 @@ namespace API_Magazynex_New.Migrations
                     b.ToTable("Towars");
                 });
 
-            modelBuilder.Entity("Magazynex_console.Pracownik", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Pracownik", b =>
                 {
-                    b.HasOne("Magazynex_console.Magazyn", "Magazyn")
+                    b.HasOne("API_Magazynex_New.Encje.Magazyn", "Magazyn")
                         .WithMany("Pracownicy")
                         .HasForeignKey("MagazynId");
 
                     b.Navigation("Magazyn");
                 });
 
-            modelBuilder.Entity("Magazynex_console.Towar", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Towar", b =>
                 {
-                    b.HasOne("Magazynex_console.Firma", "Firma")
-                        .WithMany()
+                    b.HasOne("API_Magazynex_New.Encje.Firma", "Firma")
+                        .WithMany("towars")
                         .HasForeignKey("FirmaId");
 
-                    b.HasOne("Magazynex_console.Magazyn", "Magazyn")
+                    b.HasOne("API_Magazynex_New.Encje.Magazyn", "Magazyn")
                         .WithMany("Towary")
-                        .HasForeignKey("MagazynId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MagazynId");
 
                     b.Navigation("Firma");
 
                     b.Navigation("Magazyn");
                 });
 
-            modelBuilder.Entity("Magazynex_console.Magazyn", b =>
+            modelBuilder.Entity("API_Magazynex_New.Encje.Firma", b =>
+                {
+                    b.Navigation("towars");
+                });
+
+            modelBuilder.Entity("API_Magazynex_New.Encje.Magazyn", b =>
                 {
                     b.Navigation("Pracownicy");
 
