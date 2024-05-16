@@ -58,5 +58,20 @@ namespace API_Magazynex_New.Services
             return false;
         }
 
+        public async Task<bool> UpdateTowar(int Id, TowarCreateDTO dto)
+        {
+            var towarItem = await _dbContext.Towars.FirstOrDefaultAsync(f => f.id == Id);
+            if (towarItem == null) { return false; }
+            
+            towarItem.Nazwa_Produktu = dto.Nazwa_Produktu;
+            towarItem.Opis_Produktu = dto.Opis_Produktu;
+            towarItem.Ilosc = dto.Ilosc;
+            towarItem.Cena_Netto_Za_Sztuke = dto.Cena_Netto_Za_Sztuke;
+            towarItem.MagazynId = dto.Id_Magazynu;
+            towarItem.FirmaId = dto.Id_Firmy;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

@@ -52,5 +52,30 @@ namespace API_Magazynex_New.Services
 
             return false;
         }
+
+        public async Task<bool> UpdateFirma(int Id, FirmaCreateDTO dto)
+        {
+            
+            var firmaItem = await _dbContext.Firmas.FirstOrDefaultAsync(f => f.Id == Id);
+
+            if (firmaItem is null) return false;
+
+            firmaItem.Nazwa = dto.Nazwa;
+            firmaItem.Numer_Telefonu = dto.Numer_Telefonu;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ReactivateFirma(int Id)
+        {
+            var firma = await _dbContext.Firmas.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == Id);
+            if (firma is null) return false;
+            firma.IsActive = true;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+
     }
 }

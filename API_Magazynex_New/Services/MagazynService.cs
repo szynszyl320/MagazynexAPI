@@ -54,7 +54,27 @@ namespace API_Magazynex_New.Services
 
             return false;
         }
+        public async Task<bool> UpdateMagazyn(int Id, MagazynCreateDTO dto)
+        {
 
+            var magazynitem = await _dbContext.Magazyns.FirstOrDefaultAsync(f => f.Id == Id);
 
+            if (magazynitem is null) return false;
+
+            magazynitem.Nazwa = dto.Nazwa;
+            magazynitem.lokalizacja = dto.lokalizacja;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ReactivateMagazyn(int Id)
+        {
+            var magazyn = await _dbContext.Magazyns.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == Id);
+            if (magazyn is null) return false;
+            magazyn.IsActive = true;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

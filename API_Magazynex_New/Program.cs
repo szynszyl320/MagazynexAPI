@@ -66,20 +66,29 @@ app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
     return Results.Created($"/firmas/{firmareturn.Id}", firmareturn);
 });
 
-/*app.MapPut("/firmas/{Nazwa}", async (string Nazwa, Firma inputTodo, DatabaseContext db) =>
+/*app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
 {
-    var firmaItem = await db.Firmas.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
-
-    if (firmaItem is null) return Results.NotFound();
-
-    firmaItem.Nazwa = inputTodo.Nazwa;
-    firmaItem.Numer_Telefonu = inputTodo.Numer_Telefonu;
-
-    await db.SaveChangesAsync();
-
-    return Results.NoContent();
-});*/
-
+    if (await firmaService.UpdateFirma(Id, dto))
+    {
+        return Results.NoContent();
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+});
+*/
+app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
+{
+    if (await firmaService.ReactivateFirma(Id))
+    {
+        return Results.NoContent();
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+});
 
 app.MapDelete("/firmas/{Id}", async (FirmaService firmaService, int Id) =>
 {
@@ -113,16 +122,22 @@ app.MapPost("/magazyns", async (MagazynCreateDTO dto, MagazynService magazynServ
     return Results.Created($"/magazyns/{returnmagazyn.Nazwa}", returnmagazyn);
 });
 
-/*app.MapPut("/magazyns/{Nazwa}", async (string Nazwa, Magazyn inputTodo, DatabaseContext db) =>
+/*app.MapPut("/magazyns/{Id}", async (int Id, MagazynService magazynService, MagazynCreateDTO dto) =>
 {
-    var magazynItem = await db.magazyns.FirstOrDefaultAsync(f => f.Nazwa == Nazwa);
-    if (magazynItem is null) return Results.NotFound();
-    magazynItem.Nazwa = inputTodo.Nazwa;
-    magazynItem.lokalizacja = inputTodo.lokalizacja;
-    magazynItem.Pracownicy = inputTodo.Pracownicy;
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});*/
+    if(await magazynService.UpdateMagazyn(Id, dto))
+    {  return Results.NoContent(); }
+    else
+    { return Results.NoContent(); }
+});
+*/
+
+app.MapPut("/magazyns/{Id}", async (int Id, MagazynService magazynService) =>
+{ 
+    if (await magazynService.ReactivateMagazyn(Id))
+    { return Results.NoContent(); }
+    else
+    { return Results.NotFound(); }
+});
 
 app.MapDelete("/magazyns/{Id}", async (int Id, MagazynService magazynService) =>
 {
@@ -155,21 +170,8 @@ app.MapPost("/towars", async (TowarCreateDTO dto, TowarService towarService) =>
     return Results.Created($"/towars/{returntowar.name}", returntowar);
 });
 
-/*app.MapPut("/towars/{Nazwa_Produktu}", async (string Nazwa_Produktu, Towar inputTowar, DatabaseContext db) =>
-{
-    var towarItem = await db.Towars.FirstOrDefaultAsync(f => f.Nazwa_Produktu == Nazwa_Produktu);
-    if (towarItem is null) return Results.NotFound();
-    towarItem.Firma = inputTowar.Firma;
-    towarItem.Magazyn = inputTowar.Magazyn;
-    towarItem.Opis_Produktu = inputTowar.Opis_Produktu;
-    towarItem.Klasa_Towarow_Niebezpiecznych = inputTowar.Klasa_Towarow_Niebezpiecznych;
-    towarItem.Cena_Netto_Za_Sztuke = inputTowar.Cena_Netto_Za_Sztuke;
-    towarItem.Ilosc = inputTowar.Ilosc;
-    towarItem.Nazwa_Produktu = inputTowar.Nazwa_Produktu;
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
-*/
+
+
 app.MapDelete("/towars/{id}", async (int Id, TowarService towarService) =>
 {
     if (await towarService.DeleteTowar(Id))

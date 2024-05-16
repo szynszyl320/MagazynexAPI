@@ -59,6 +59,18 @@ namespace API_Magazynex_New.Services
             return false;
         }
 
+        public async Task<bool> UpdatePracownik(int Id, PracownikCreateDTO dto)
+        {
+            var pracownikItem = await _dbContext.Pracowniks.FirstOrDefaultAsync(f => f.Id == Id);
+            if (pracownikItem == null) return false;
+            pracownikItem.Imie = dto.Imie;
+            pracownikItem.Nazwisko = dto.Nazwisko;
+            pracownikItem.Stanowisko = dto.Stanowisko;
+            pracownikItem.Numer_Telefonu = dto.Numer_Telefonu;
+            pracownikItem.MagazynId = dto.Id_Magazynu;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
 
     }
 }
