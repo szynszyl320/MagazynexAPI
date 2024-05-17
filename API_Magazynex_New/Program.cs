@@ -10,6 +10,7 @@ using NSwag.AspNetCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections.Generic;
 using API_Magazynex_New.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -171,6 +172,14 @@ app.MapPost("/towars", async (TowarCreateDTO dto, TowarService towarService) =>
 });
 
 
+app.MapPut("/towars/{id}", async (int Id, TowarService towarService, TowarCreateDTO dto) =>
+{
+    if (await towarService.UpdateTowar(Id, dto))
+    { return Results.NoContent(); }
+    else
+    { return Results.NotFound(); }
+});
+
 
 app.MapDelete("/towars/{id}", async (int Id, TowarService towarService) =>
 {
@@ -204,21 +213,15 @@ app.MapPost("/pracowniks", async (PracownikCreateDTO dto, PracownikService praco
     return Results.Created($"/towars/{returnpracownik.Imie}", returnpracownik);
 });
 
-/*app.MapPut("/pracowniks/{Imie}", async (string Imie, Pracownik inputPracownik, DatabaseContext db) =>
+app.MapPut("/pracowniks/{Id}", async (int Id, PracownikService pracownikService, PracownikCreateDTO dto) =>
 {
-    var pracownikItem = await db.Pracowniks.FirstOrDefaultAsync(f => f.Imie == Imie);
-    if (pracownikItem is null) return Results.NotFound();
-    pracownikItem.Imie = inputPracownik.Imie;
-    pracownikItem.Nazwisko = inputPracownik.Nazwisko;
-    pracownikItem.Stanowisko = inputPracownik.Stanowisko;
-    pracownikItem.Numer_Telefonu = inputPracownik.Numer_Telefonu;
-    pracownikItem.Magazyn = inputPracownik.Magazyn;
-    await db.SaveChangesAsync();
-    return Results.NoContent();
+    if (await pracownikService.UpdatePracownik(Id, dto))
+    { return Results.NoContent(); }
+    else
+    { return Results.NotFound(); }
 });
-*/
 
-app.MapDelete("/pracownik/{Id}", async (int Id, PracownikService pracownikService) =>
+app.MapDelete("/pracowniks/{Id}", async (int Id, PracownikService pracownikService) =>
 {
     if (await pracownikService.DeletePracownik(Id))
     {
