@@ -26,24 +26,6 @@ namespace API_Magazynex_New.Encje
         public List<Mozliwosc_Pechowywania_Materialow> Przechowywane_Materialy { get; set;}
         public string? Nazwa { get; set; }
         public bool IsActive { get; set; }
-
-        public void Assing_Lokalizacja(string Localization)
-        {
-            lokalizacja = Localization;
-        }
-
-        public bool Assing_Name(string Name)
-        {
-            if (Name.Length < 1)
-            {
-                return false;
-            }
-            else
-            {
-                Nazwa = Name;
-                return true;
-            }
-        }
     }
 
 }

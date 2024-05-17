@@ -17,15 +17,6 @@ namespace API_Magazynex_New.Encje
         public string Numer_Telefonu { get; set; }
         public Magazyn? Magazyn { get; set; }
         public int? MagazynId { get; set; }  
-       
-        /*public void Assign_Numer_telefonu(string numer_telefonu)
-        {
-            numer_telefonu.Replace(" ", "");
-            Numer_Telefonu = Convert.ToInt32(numer_telefonu);
-        }*/
-
-
-
 
     }
 }

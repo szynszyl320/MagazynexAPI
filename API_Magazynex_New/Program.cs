@@ -68,7 +68,7 @@ app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
     return Results.Created($"/firmas/{firmareturn.Id}", firmareturn);
 });
 
-/*app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
+app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
 {
     if (await firmaService.UpdateFirma(Id, dto))
     {
@@ -79,8 +79,7 @@ app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
         return Results.NotFound();
     }
 });
-*/
-app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
+app.MapPut("/firmas/{Id}/restore", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
 {
     if (await firmaService.ReactivateFirma(Id))
     {
@@ -124,16 +123,15 @@ app.MapPost("/magazyns", async (MagazynCreateDTO dto, MagazynService magazynServ
     return Results.Created($"/magazyns/{returnmagazyn.Nazwa}", returnmagazyn);
 });
 
-/*app.MapPut("/magazyns/{Id}", async (int Id, MagazynService magazynService, MagazynCreateDTO dto) =>
+app.MapPut("/magazyns/{Id}", async (int Id, MagazynService magazynService, MagazynCreateDTO dto) =>
 {
-    if(await magazynService.UpdateMagazyn(Id, dto))
-    {  return Results.NoContent(); }
+    if (await magazynService.UpdateMagazyn(Id, dto))
+    { return Results.NoContent(); }
     else
     { return Results.NoContent(); }
 });
-*/
 
-app.MapPut("/magazyns/{Id}", async (int Id, MagazynService magazynService) =>
+app.MapPut("/magazyns/{Id}/restore", async (int Id, MagazynService magazynService) =>
 { 
     if (await magazynService.ReactivateMagazyn(Id))
     { return Results.NoContent(); }

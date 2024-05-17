@@ -23,45 +23,5 @@ namespace API_Magazynex_New.Encje
         public float? Cena_Netto_Za_Sztuke { get; set; }
         public int? Ilosc { get; set; }
         public string? Nazwa_Produktu { get; set; }
-        
-        public void Assing_Desc(string Description)
-        {
-            Opis_Produktu = Description;
-        }
-
-        
-        public void Assing_Price(string Price)
-        {
-            Cena_Netto_Za_Sztuke = float.Parse(Price);
-        }
-
-        public bool Assing_Amount(string Amound)
-        {
-            int Amount = int.Parse(Amound);
-            if (Amount < 1)
-            {
-                return false;
-            }
-            else
-            {
-                Ilosc = Amount;
-                return true;
-            }
-        }
-
-        public bool Assing_Name(string Name)
-        {
-            if (Name.Length < 1)
-            {
-                return false;
-            }
-            else
-            {
-                Nazwa_Produktu = Name;
-                return true;
-            }
-        }
-        
-
     }
 }
