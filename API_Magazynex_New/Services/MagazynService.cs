@@ -33,7 +33,7 @@ namespace API_Magazynex_New.Services
             magazyn.lokalizacja = dto.lokalizacja;
             magazyn.Towary = new List<Towar>();
             magazyn.Pracownicy = new List<Pracownik>();
-
+            magazyn.Przechowywane_Materialy = dto.Przechowywane_Materialy;
 
             _dbContext.Magazyns.Add(magazyn);
             await _dbContext.SaveChangesAsync();

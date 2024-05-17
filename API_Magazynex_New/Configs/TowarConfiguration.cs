@@ -12,10 +12,6 @@ namespace API_Magazynex_New.Configs
             builder.Property(x => x.Nazwa_Produktu).IsRequired();
             
             builder.Property(x => x.Opis_Produktu).IsRequired();
-
-            builder.Property(x => x.Klasa_Towarow_Niebezpiecznych)
-                .HasMaxLength(1)
-                .IsRequired();
         
             builder.Property(x => x.Cena_Netto_Za_Sztuke).IsRequired();
 

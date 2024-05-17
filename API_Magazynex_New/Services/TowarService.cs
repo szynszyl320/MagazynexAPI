@@ -1,6 +1,7 @@
 ﻿using API_Magazynex_New.CreateDTO;
 using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace API_Magazynex_New.Services
 {
@@ -31,9 +32,14 @@ namespace API_Magazynex_New.Services
             nowyTowar.Opis_Produktu = dto.Opis_Produktu;
             nowyTowar.Cena_Netto_Za_Sztuke = dto.Cena_Netto_Za_Sztuke;
             nowyTowar.Ilosc = dto.Ilosc;
+            nowyTowar.Klasa_Towaru = dto.Klasa_Towaru;
 
             Firma? firma = _dbContext.Firmas.FirstOrDefault(x => x.Id == dto.Id_Firmy);
             Magazyn? magazyn = _dbContext.Magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
+
+            bool contains = nowyTowar.Klasa_Towaru.All(x => magazyn.Przechowywane_Materialy.Contains(x));
+            if (!contains)
+            { throw new ArgumentException("Magazyn nie jest w stanie przechowywac towarow tej klasy");  }
 
             nowyTowar.Firma = firma;
             nowyTowar.Magazyn = magazyn;
