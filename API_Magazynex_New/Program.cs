@@ -26,15 +26,13 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
-builder.Services.AddCors(options =>
+builder.Services.AddCors(o => o.AddPolicy("Cors_Access", builder =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+    builder.SetIsOriginAllowed(origin => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+}));
 
 var app = builder.Build();
 
@@ -50,11 +48,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-app.UseCors();
+app.UseCors("Cors_Access");
 
 app.MapGet("/firmas", async (FirmaService firma) =>
 { 
