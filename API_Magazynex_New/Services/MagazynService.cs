@@ -63,6 +63,7 @@ namespace API_Magazynex_New.Services
 
             magazynitem.Nazwa = dto.Nazwa;
             magazynitem.lokalizacja = dto.lokalizacja;
+            magazynitem.Przechowywane_Materialy = dto.Przechowywane_Materialy;
 
             await _dbContext.SaveChangesAsync();
             return true;

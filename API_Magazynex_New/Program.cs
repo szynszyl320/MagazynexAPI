@@ -1,17 +1,9 @@
-using API_Magazynex_New;
-using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
 using API_Magazynex_New.CreateDTO;
-using API_Magazynex_New.Configs;
 using API_Magazynex_New.Services;
-using API_Magazynex_New.Enums;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using Namotion.Reflection;
-using NSwag.AspNetCore;
-using Microsoft.Extensions.Logging.Abstractions;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +26,16 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -48,6 +50,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseCors();
 
 app.MapGet("/firmas", async (FirmaService firma) =>
 { 
@@ -71,36 +78,24 @@ app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
 app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
 {
     if (await firmaService.UpdateFirma(Id, dto))
-    {
-        return Results.NoContent();
-    }
+    { return Results.NoContent(); }
     else
-    {
-        return Results.NotFound();
-    }
+    { return Results.NotFound(); }
 });
 app.MapPut("/firmas/{Id}/restore", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
 {
     if (await firmaService.ReactivateFirma(Id))
-    {
-        return Results.NoContent();
-    }
+    { return Results.NoContent();  }
     else
-    {
-        return Results.NotFound();
-    }
+    { return Results.NotFound(); }
 });
 
 app.MapDelete("/firmas/{Id}", async (FirmaService firmaService, int Id) =>
 {
     if (await firmaService.DeleteFrima(Id))
-    {
-        return Results.NoContent();
-    }
+    { return Results.NoContent(); }
     else
-    {
-        return Results.NotFound();
-    }
+    { return Results.NotFound(); }
 });
 
 
@@ -142,13 +137,9 @@ app.MapPut("/magazyns/{Id}/restore", async (int Id, MagazynService magazynServic
 app.MapDelete("/magazyns/{Id}", async (int Id, MagazynService magazynService) =>
 {
     if (await magazynService.DeleteMagazyn(Id))
-    {
-        return Results.NoContent();
-    }
+    { return Results.NoContent(); }
     else
-    {
-        return Results.NotFound();
-    }
+    {  return Results.NotFound(); }
 });
 
 // Towary
@@ -183,13 +174,9 @@ app.MapPut("/towars/{id}", async (int Id, TowarService towarService, TowarCreate
 app.MapDelete("/towars/{id}", async (int Id, TowarService towarService) =>
 {
     if (await towarService.DeleteTowar(Id))
-    { 
-        return Results.NoContent();
-    }
+    { return Results.NoContent(); }
     else
-    { 
-        return Results.NotFound(); 
-    }
+    { return Results.NotFound(); }
    
 });
 
@@ -223,13 +210,12 @@ app.MapPut("/pracowniks/{Id}", async (int Id, PracownikService pracownikService,
 app.MapDelete("/pracowniks/{Id}", async (int Id, PracownikService pracownikService) =>
 {
     if (await pracownikService.DeletePracownik(Id))
-    {
-        return Results.NoContent();
-    }
+    { return Results.NoContent(); }
     else
-    {
-        return Results.NotFound();
-    }
+    { return Results.NotFound(); }
 });
 
+
 app.Run();
+
+
