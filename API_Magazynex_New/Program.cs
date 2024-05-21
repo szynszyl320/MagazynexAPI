@@ -59,6 +59,7 @@ app.MapGet("/firmas", async (FirmaService firma) =>
 app.MapGet("/firmas/{Id}", async (int Id, FirmaService firmaService) =>
 {
     var returnmagazyn = await firmaService.FirmaGetSpecific(Id);
+
     return returnmagazyn != null ? Results.Ok(returnmagazyn) : Results.NotFound();
 });
 

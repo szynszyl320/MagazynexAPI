@@ -21,6 +21,12 @@ namespace API_Magazynex_New.Configs
                 .WithMany(x => x.Towars)
                 .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
+
+            builder.HasOne(x => x.Magazyn)
+                .WithMany(x => x.Towary)
+                .IsRequired(false);
+        
+        
         }
 
 

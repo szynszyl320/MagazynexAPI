@@ -20,8 +20,6 @@ namespace API_Magazynex_New.Configs
                 .HasForeignKey(x => x.FirmaId);
 
             builder.Property(x => x.IsActive).IsRequired();
-
-            //builder.HasQueryFilter(x => x.IsActive);
         }
     }
 }

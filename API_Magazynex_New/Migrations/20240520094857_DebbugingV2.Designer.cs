@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240520094857_DebbugingV2")]
+    partial class DebbugingV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,8 +122,9 @@ namespace API_Magazynex_New.Migrations
                     b.Property<int?>("Ilosc")
                         .HasColumnType("int");
 
-                    b.Property<int>("Klasa_Towaru")
-                        .HasColumnType("int");
+                    b.Property<string>("Klasa_Towaru")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("MagazynId")
                         .HasColumnType("int");

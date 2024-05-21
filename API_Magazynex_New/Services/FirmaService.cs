@@ -20,17 +20,22 @@ namespace API_Magazynex_New.Services
             return firmaItems.Select(x => new FirmaSimpleDTO(x)).ToList();
         }
 
-        public async Task<FirmaSimpleDTO>  FirmaGetSpecific(int Id)
+        public async Task<FirmaSimpleDTO> FirmaGetSpecific(int Id)
         {
-            return new FirmaSimpleDTO(_dbContext.Firmas.Include(x => x.Towars).FirstOrDefault(x => x.Id == Id));
+            var firmy = _dbContext.Firmas.ToList();
+
+            var firma = firmy.FirstOrDefault(x => x.Id == Id);
+
+            return new FirmaSimpleDTO(firma);
         }
     
         public async Task<FirmaSimpleDTO> CreateNewFirma(FirmaCreateDTO dto)
         {
-            Firma firma = new Firma();
-            
-            firma.Nazwa = dto.Nazwa;
-            firma.Numer_Telefonu = dto.Numer_Telefonu;
+            Firma firma = new Firma
+            {
+                Nazwa = dto.Nazwa,
+                Numer_Telefonu = dto.Numer_Telefonu
+            };
 
             _dbContext.Firmas.Add(firma);
             await _dbContext.SaveChangesAsync();

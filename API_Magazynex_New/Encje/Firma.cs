@@ -11,14 +11,13 @@ namespace API_Magazynex_New.Encje
     {
         public Firma()
         { 
-            Towars = new List<Towar>();
             IsActive = true;
         }
         
         public int Id { get; set; }
         public string Nazwa { get; set; }
         public string Numer_Telefonu { get; set; }
-        public List<Towar> Towars { get; set; }
+        public List<Towar> Towars { get; set; } = new List<Towar>();
         public bool IsActive { get; set; } 
     }
 }
