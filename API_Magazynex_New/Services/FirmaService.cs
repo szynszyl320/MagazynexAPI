@@ -22,7 +22,7 @@ namespace API_Magazynex_New.Services
 
         public async Task<FirmaSimpleDTO> FirmaGetSpecific(int Id)
         {
-            var firmy = _dbContext.Firmas.ToList();
+            var firmy = _dbContext.Firmas.Include(x => x.Towars).ToList();
 
             var firma = firmy.FirstOrDefault(x => x.Id == Id);
 

@@ -19,11 +19,16 @@ builder.Services.AddScoped<PracownikService>();
 builder.Services.AddScoped<TowarService>();
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddControllers();
+
 builder.Services.AddOpenApiDocument(config =>
 {
     config.DocumentName = "MagazynexAPI";
-    config.Title = "MagazynexAPI v1";
-    config.Version = "v1";
+    config.Title = "MagazynexAPI v2";
+    config.Version = "v2";
 });
 
 builder.Services.AddCors(o => o.AddPolicy("Cors_Access", builder =>
@@ -39,6 +44,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
+    app.UseDeveloperExceptionPage();
     app.UseSwaggerUi(config =>
     {
         config.DocumentTitle = "MagazynexAPI";
@@ -47,6 +53,13 @@ if (app.Environment.IsDevelopment())
         config.DocExpansion = "list";
     });
 }
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.UseCors("Cors_Access");
 
@@ -77,7 +90,7 @@ app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreate
     else
     { return Results.NotFound(); }
 });
-app.MapPut("/firmas/{Id}/restore", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
+app.MapPut("/firmas/{Id}/restore", async (FirmaService firmaService, int Id) =>
 {
     if (await firmaService.ReactivateFirma(Id))
     { return Results.NoContent();  }
