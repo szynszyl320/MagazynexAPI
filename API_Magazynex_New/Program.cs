@@ -4,6 +4,9 @@ using API_Magazynex_New.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc.Routing;
+using CsvHelper;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,11 +74,21 @@ app.MapGet("/firmas", async (FirmaService firma) =>
 
 app.MapGet("/firmas/{Id}", async (int Id, FirmaService firmaService) =>
 {
-    var returnmagazyn = await firmaService.FirmaGetSpecific(Id);
+    var returnfirma = await firmaService.FirmaGetSpecific(Id);
 
-    return returnmagazyn != null ? Results.Ok(returnmagazyn) : Results.NotFound();
+    return returnfirma != null ? Results.Ok(returnfirma) : Results.NotFound();
 });
 
+app.MapGet("/firmas/CSV", async (FirmaService firmaService) =>
+{
+    var returnfirma = await firmaService.FirmaExport();
+    using (var writer = new StreamWriter("export.csv"))
+    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+    {
+        csv.WriteRecords(returnfirma);
+    }
+
+});
 
 app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
 {

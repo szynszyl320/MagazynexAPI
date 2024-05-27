@@ -1,5 +1,6 @@
 ﻿using API_Magazynex_New.Configs;
 using API_Magazynex_New.CreateDTO;
+using API_Magazynex_New.CsvDTO;
 using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
 
@@ -18,6 +19,12 @@ namespace API_Magazynex_New.Services
         {
             var firmaItems = await _dbContext.Firmas.Include(x => x.Towars).ToListAsync();
             return firmaItems.Select(x => new FirmaSimpleDTO(x)).ToList();
+        }
+
+        public async Task<List<FirmaCsvDTO>> FirmaExport()
+        {
+            var firmaItems = await _dbContext.Firmas.ToListAsync();
+            return firmaItems.Select(x => new FirmaCsvDTO(x)).ToList();
         }
 
         public async Task<FirmaSimpleDTO> FirmaGetSpecific(int Id)
