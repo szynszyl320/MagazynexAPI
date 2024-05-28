@@ -3,7 +3,10 @@ using API_Magazynex_New.CreateDTO;
 using API_Magazynex_New.CsvDTO;
 using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
-
+using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 namespace API_Magazynex_New.Services
 {
     public class FirmaService
@@ -21,12 +24,6 @@ namespace API_Magazynex_New.Services
             return firmaItems.Select(x => new FirmaSimpleDTO(x)).ToList();
         }
 
-        public async Task<List<FirmaCsvDTO>> FirmaExport()
-        {
-            var firmaItems = await _dbContext.Firmas.ToListAsync();
-            return firmaItems.Select(x => new FirmaCsvDTO(x)).ToList();
-        }
-
         public async Task<FirmaSimpleDTO> FirmaGetSpecific(int Id)
         {
             var firmy = _dbContext.Firmas.Include(x => x.Towars).ToList();
@@ -35,7 +32,35 @@ namespace API_Magazynex_New.Services
 
             return new FirmaSimpleDTO(firma);
         }
+
+        public async Task<IResult> FirmaExport()
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
+
+            var firmaItems = await _dbContext.Firmas.ToListAsync();
+            var returnfirma = firmaItems.Select(x => new FirmaCsvDTO(x)).ToList();
+
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, csvConfig))
+            {
+                csv.WriteRecords(returnfirma);
+                writer.Flush();
+
+                var content = memoryStream.ToArray();
+                return Results.File(content, "text/csv", "firma.csv");
+            }
+        }
     
+        /*public async Task<int> FirmaImport(File file)
+        {
+            var ReadFile = File.Open(file, )
+            return 0;
+        }
+        */
         public async Task<FirmaSimpleDTO> CreateNewFirma(FirmaCreateDTO dto)
         {
             Firma firma = new Firma

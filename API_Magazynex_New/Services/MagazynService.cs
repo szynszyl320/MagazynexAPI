@@ -1,6 +1,10 @@
 ﻿using API_Magazynex_New.CreateDTO;
+using API_Magazynex_New.CsvDTO;
 using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
+using CsvHelper.Configuration;
+using CsvHelper;
+using System.Globalization;
 
 namespace API_Magazynex_New.Services
 {
@@ -24,8 +28,29 @@ namespace API_Magazynex_New.Services
         {
             return new MagazynSimpleDTO(_dbContext.Magazyns.Include(x => x.Towary).Include(x => x.Pracownicy).FirstOrDefault(x => x.Id == Id));
         }
-    
-    
+
+        public async Task<IResult> MagazynExport()
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
+
+            var MagazynItems = await _dbContext.Magazyns.ToListAsync();
+            var returnMagazyn = MagazynItems.Select(x => new MagazynCsvDTO(x)).ToList();
+
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, csvConfig))
+            {
+                csv.WriteRecords(returnMagazyn);
+                writer.Flush();
+
+                var content = memoryStream.ToArray();
+                return Results.File(content, "text/csv", "magazyn.csv");
+            }
+        }
+
         public async Task<MagazynSimpleDTO> CreateNewMagazyn(MagazynCreateDTO dto)
         {
             Magazyn magazyn = new Magazyn();

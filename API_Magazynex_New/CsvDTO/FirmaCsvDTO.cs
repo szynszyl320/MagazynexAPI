@@ -1,5 +1,7 @@
-﻿using API_Magazynex_New.Encje;
+﻿using API_Magazynex_New.CsvDTO;
+using API_Magazynex_New.Encje;
 using CsvHelper;
+using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
 namespace API_Magazynex_New.CsvDTO
@@ -12,11 +14,10 @@ namespace API_Magazynex_New.CsvDTO
             NumerTelefonu = firma.Numer_Telefonu;
         }
 
-        [Name("id")] 
         public int Id { get; set; }
-        [Name("nazwa")]
         public string Nazwa { get; set; }
-        [Name("numer")]
         public string NumerTelefonu { get; set; }
     }
 }
+
+

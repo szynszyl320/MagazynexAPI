@@ -7,8 +7,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Routing;
 using CsvHelper;
 using System.Globalization;
+using System.Reflection.Metadata;
+using API_Magazynex_New.CsvDTO;
+using CsvHelper.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -30,8 +35,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument(config =>
 {
     config.DocumentName = "MagazynexAPI";
-    config.Title = "MagazynexAPI v2";
-    config.Version = "v2";
+    config.Title = "MagazynexAPI";
+    config.Version = "v3";
 });
 
 builder.Services.AddCors(o => o.AddPolicy("Cors_Access", builder =>
@@ -66,6 +71,7 @@ app.MapControllers();
 
 app.UseCors("Cors_Access");
 
+
 app.MapGet("/firmas", async (FirmaService firma) =>
 { 
     return Results.Ok(await firma.FirmaGetAll());
@@ -81,14 +87,9 @@ app.MapGet("/firmas/{Id}", async (int Id, FirmaService firmaService) =>
 
 app.MapGet("/firmas/CSV", async (FirmaService firmaService) =>
 {
-    var returnfirma = await firmaService.FirmaExport();
-    using (var writer = new StreamWriter("export.csv"))
-    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-    {
-        csv.WriteRecords(returnfirma);
-    }
-
+    return await firmaService.FirmaExport();
 });
+
 
 app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
 {
@@ -133,6 +134,12 @@ app.MapGet("/magazyns/{Id}", async (int Id, MagazynService magazynService) =>
     return returnmagazyn != null ? Results.Ok(returnmagazyn) : Results.NotFound();
 });
 
+app.MapGet("/magazyns/CSV", async (MagazynService magazynService) =>
+{
+    return await magazynService.MagazynExport();
+});
+
+
 app.MapPost("/magazyns", async (MagazynCreateDTO dto, MagazynService magazynService) =>
 {
     MagazynSimpleDTO returnmagazyn = await magazynService.CreateNewMagazyn(dto);
@@ -176,6 +183,11 @@ app.MapGet("/towars/{id}", async (int Id, TowarService towarService) =>
     return returntowar != null ? Results.Ok(returntowar) : Results.NotFound();
 });
 
+app.MapGet("/towars/CSV", async (TowarService towarService) =>
+{
+    return await towarService.TowarExport();
+});
+
 app.MapPost("/towars", async (TowarCreateDTO dto, TowarService towarService) =>
 {
     var returntowar = await towarService.CreateNewTowar(dto);
@@ -213,6 +225,12 @@ app.MapGet("/pracowniks/{Id}", async (int Id, PracownikService pracownikService)
     var returnpracownik = await pracownikService.PracownikGetSpecific(Id);
     return returnpracownik != null ? Results.Ok(returnpracownik) : Results.NotFound();
 });
+
+app.MapGet("/pracowniks/CSV", async (PracownikService pracownikService) =>
+{
+    return await pracownikService.PracownikExport();
+});
+
 
 app.MapPost("/pracowniks", async (PracownikCreateDTO dto, PracownikService pracownikService) =>
 {

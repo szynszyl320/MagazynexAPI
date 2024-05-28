@@ -1,6 +1,10 @@
 ﻿using API_Magazynex_New.CreateDTO;
+using API_Magazynex_New.CsvDTO;
 using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
+using CsvHelper.Configuration;
+using CsvHelper;
+using System.Globalization;
 
 namespace API_Magazynex_New.Services
 {
@@ -22,6 +26,28 @@ namespace API_Magazynex_New.Services
         public async Task<TowarySimpleDTO> TowarGetSpecific(int Id)
         {
             return new TowarySimpleDTO(_dbContext.Towars.Include(x => x.Firma).Include(x => x.Magazyn).FirstOrDefault(x => x.id == Id));
+        }
+
+        public async Task<IResult> TowarExport()
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
+
+            var TowarItems = await _dbContext.Towars.ToListAsync();
+            var returnTowar = TowarItems.Select(x => new TowarCsvDTO(x)).ToList();
+
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, csvConfig))
+            {
+                csv.WriteRecords(returnTowar);
+                writer.Flush();
+
+                var content = memoryStream.ToArray();
+                return Results.File(content, "text/csv", "towar.csv");
+            }
         }
 
         public async Task<TowarySimpleDTO> CreateNewTowar(TowarCreateDTO dto)
