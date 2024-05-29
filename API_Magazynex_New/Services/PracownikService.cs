@@ -5,6 +5,8 @@ using API_Magazynex_New.SimpleDTO;
 using CsvHelper.Configuration;
 using CsvHelper;
 using System.Globalization;
+using API_Magazynex_New.ForeingAPI;
+using System.Xml.Linq;
 
 namespace API_Magazynex_New.Services
 {
@@ -92,20 +94,30 @@ namespace API_Magazynex_New.Services
 
         public async Task<PracownikSimpleDTO> CreateNewPracownik(PracownikCreateDTO dto)
         {
+            HttpClient httpClient = new HttpClient();
+            
             Pracownik pracownik = new Pracownik();
             pracownik.Imie = dto.Imie;
             pracownik.Nazwisko = dto.Nazwisko;
             pracownik.Stanowisko = dto.Stanowisko;
             pracownik.Numer_Telefonu = dto.Numer_Telefonu;
-            
+           
+
             Magazyn? magazyn = _dbContext.Magazyns.FirstOrDefault(x => x.Id == dto.Id_Magazynu);
 
             pracownik.Magazyn = magazyn;
             pracownik.MagazynId = magazyn.Id;
+
+            var AgeRespone = await httpClient.GetFromJsonAsync<AgifyRespone>($"https://api.agify.io?name={pracownik.Imie}");
+            pracownik.AproxAge = AgeRespone.Age;
+
+            var NationRespone = await httpClient.GetFromJsonAsync<NationalizeResponse>($"https://api.nationalize.io/?name={pracownik.Imie}");
             
+
             _dbContext.Pracowniks.Add(pracownik);
             await _dbContext.SaveChangesAsync();
-            
+
+
             return new PracownikSimpleDTO(pracownik);
         }
 
@@ -136,6 +148,5 @@ namespace API_Magazynex_New.Services
             await _dbContext.SaveChangesAsync();
             return true;
         }
-
     }
 }

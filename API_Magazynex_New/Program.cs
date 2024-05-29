@@ -282,7 +282,6 @@ app.MapDelete("/pracowniks/{Id}", async (int Id, PracownikService pracownikServi
     { return Results.NotFound(); }
 });
 
-
 app.Run();
 
 
