@@ -9,7 +9,7 @@ namespace API_Magazynex_New.CsvDTO
             Imie = pracownik.Imie;
             Nazwisko = pracownik.Nazwisko;
             Stanowisko = pracownik.Stanowisko;
-            NumerTelefonu = pracownik.Numer_Telefonu;
+            Numer_Telefonu = pracownik.Numer_Telefonu;
             MagazynId = pracownik.MagazynId;
         }
         
@@ -17,7 +17,7 @@ namespace API_Magazynex_New.CsvDTO
         public string Imie { get; set; }
         public string Nazwisko { get; set; }
         public string Stanowisko { get; set; }
-        public string NumerTelefonu { get; set; }
+        public string Numer_Telefonu { get; set; }
         public int? MagazynId { get; set; }
     }
 }

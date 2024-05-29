@@ -74,11 +74,11 @@ namespace API_Magazynex_New.Services
                         towar.MagazynId = item.MagazynId;
                         towar.Magazyn = await _dbContext.Magazyns.FirstOrDefaultAsync(x => x.Id == item.MagazynId);
                         towar.id = item.Id;
-                        towar.Opis_Produktu = item.OpisProduktu;
-                        towar.Klasa_Towaru = item.KlasaTowaru;
-                        towar.Cena_Netto_Za_Sztuke = item.CenaNettoZaSztuke;
-                        towar.Ilosc = item.IloscProduktu;
-                        towar.Nazwa_Produktu = item.NazwaProduktu;
+                        towar.Opis_Produktu = item.Opis_Produktu;
+                        towar.Klasa_Towaru = item.Klasa_Towaru;
+                        towar.Cena_Netto_Za_Sztuke = item.Cena_Netto_Za_Sztuke;
+                        towar.Ilosc = item.Ilosc;
+                        towar.Nazwa_Produktu = item.Nazwa_Produktu;
 
                         _dbContext.Towars.Add(towar);
                         await _dbContext.SaveChangesAsync();

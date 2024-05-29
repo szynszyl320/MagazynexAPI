@@ -7,20 +7,20 @@ namespace API_Magazynex_New.CsvDTO
     {
         public TowarCsvDTO(Towar towar) {
             Id = towar.id;
-            NazwaProduktu = towar.Nazwa_Produktu;
-            OpisProduktu = towar.Opis_Produktu;
-            IloscProduktu = towar.Ilosc;
-            CenaNettoZaSztuke = towar.Cena_Netto_Za_Sztuke;
-            KlasaTowaru = towar.Klasa_Towaru;
+            Nazwa_Produktu = towar.Nazwa_Produktu;
+            Opis_Produktu = towar.Opis_Produktu;
+            Ilosc = towar.Ilosc;
+            Cena_Netto_Za_Sztuke = towar.Cena_Netto_Za_Sztuke;
+            Klasa_Towaru = towar.Klasa_Towaru;
             FirmaId = towar.FirmaId;
             MagazynId = towar.MagazynId;
         }
         public int Id { get; set; }
-        public string NazwaProduktu { get; set; }
-        public string OpisProduktu { get; set; }
-        public int? IloscProduktu { get; set; }
-        public float? CenaNettoZaSztuke { get; set; }
-        public Mozliwosc_Pechowywania_Materialow KlasaTowaru { get; set; }
+        public string Nazwa_Produktu { get; set; }
+        public string Opis_Produktu { get; set; }
+        public int? Ilosc { get; set; }
+        public float? Cena_Netto_Za_Sztuke { get; set; }
+        public Mozliwosc_Pechowywania_Materialow Klasa_Towaru { get; set; }
         public int? FirmaId { get; set; }
         public int? MagazynId { get; set; }
     }

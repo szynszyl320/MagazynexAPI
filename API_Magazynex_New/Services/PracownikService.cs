@@ -74,7 +74,7 @@ namespace API_Magazynex_New.Services
                         pracownik.Nazwisko = item.Nazwisko;
                         pracownik.Stanowisko = item.Stanowisko;
                         pracownik.Id = item.Id;
-                        pracownik.Numer_Telefonu = item.NumerTelefonu;
+                        pracownik.Numer_Telefonu = item.Numer_Telefonu;
                         pracownik.MagazynId = item.MagazynId;
                         pracownik.Magazyn = await _dbContext.Magazyns.FirstOrDefaultAsync(x => x.Id == item.MagazynId);
 

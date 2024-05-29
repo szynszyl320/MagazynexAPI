@@ -72,7 +72,7 @@ namespace API_Magazynex_New.Services
                     if (!magazyns.Contains(item.Id))
                     {
                         magazyn.Nazwa = item.Nazwa;
-                        magazyn.lokalizacja = item.Lokalizacja;
+                        magazyn.lokalizacja = item.lokalizacja;
                         magazyn.Przechowywane_Materialy = magazyn.Przechowywane_Materialy;
                         magazyn.Pracownicy = new List<Pracownik>();
                         magazyn.Towary = new List<Towar>();
