@@ -50,6 +50,48 @@ namespace API_Magazynex_New.Services
             }
         }
 
+        public async Task<int> TowarImport(IFormFile file)
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
+
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            using (var csv = new CsvReader(reader, csvConfig))
+            {
+                var records = csv.GetRecords<TowarCsvDTO>();
+
+                int Duplikaty = 0;
+                foreach (var item in records)
+                {
+                    Towar towar = new Towar();
+                    var towars = _dbContext.Magazyns.Select(x => x.Id).ToList();
+                    if (!towars.Contains(item.Id))
+                    {
+                        towar.FirmaId = item.FirmaId;
+                        towar.Firma = await _dbContext.Firmas.FirstOrDefaultAsync(x => x.Id ==  item.FirmaId);
+                        towar.MagazynId = item.MagazynId;
+                        towar.Magazyn = await _dbContext.Magazyns.FirstOrDefaultAsync(x => x.Id == item.MagazynId);
+                        towar.id = item.Id;
+                        towar.Opis_Produktu = item.OpisProduktu;
+                        towar.Klasa_Towaru = item.KlasaTowaru;
+                        towar.Cena_Netto_Za_Sztuke = item.CenaNettoZaSztuke;
+                        towar.Ilosc = item.IloscProduktu;
+                        towar.Nazwa_Produktu = item.NazwaProduktu;
+
+                        _dbContext.Towars.Add(towar);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Duplikaty += 1;
+                    }
+                }
+                return Duplikaty;
+            }
+        }
+
         public async Task<TowarySimpleDTO> CreateNewTowar(TowarCreateDTO dto)
         {
             Towar nowyTowar = new Towar();

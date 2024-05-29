@@ -5,8 +5,10 @@ using API_Magazynex_New.Encje;
 using API_Magazynex_New.SimpleDTO;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Xml;
 namespace API_Magazynex_New.Services
 {
     public class FirmaService
@@ -54,13 +56,45 @@ namespace API_Magazynex_New.Services
                 return Results.File(content, "text/csv", "firma.csv");
             }
         }
-    
-        /*public async Task<int> FirmaImport(File file)
+        
+        public async Task<int> FirmaImport(IFormFile file)
         {
-            var ReadFile = File.Open(file, )
-            return 0;
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
+
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            using (var csv = new CsvReader(reader, csvConfig))
+            {
+                var records = csv.GetRecords<FirmaCsvDTO>();
+
+                int Duplikaty = 0;
+                foreach (var item in records)
+                {
+                    Firma firma = new Firma();
+                    var firmas = _dbContext.Firmas.Select(x => x.Id).ToList();
+                    if (!firmas.Contains(item.Id))
+                    {
+                        firma.Id = item.Id;
+                        firma.Nazwa = item.Nazwa;
+                        firma.Numer_Telefonu = item.Numer_Telefonu;
+                        firma.Towars = new List<Towar>();
+
+                        _dbContext.Firmas.Add(firma);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Duplikaty += 1;
+                    }
+                }
+                return Duplikaty;
+            }
         }
-        */
+
+
+
         public async Task<FirmaSimpleDTO> CreateNewFirma(FirmaCreateDTO dto)
         {
             Firma firma = new Firma

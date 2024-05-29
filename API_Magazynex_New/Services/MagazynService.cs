@@ -5,6 +5,7 @@ using API_Magazynex_New.SimpleDTO;
 using CsvHelper.Configuration;
 using CsvHelper;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace API_Magazynex_New.Services
 {
@@ -48,6 +49,43 @@ namespace API_Magazynex_New.Services
 
                 var content = memoryStream.ToArray();
                 return Results.File(content, "text/csv", "magazyn.csv");
+            }
+        }
+
+        public async Task<int> MagazynImport(IFormFile file)
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
+
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            using (var csv = new CsvReader(reader, csvConfig))
+            {
+                var records = csv.GetRecords<MagazynCsvDTO>();
+
+                int Duplikaty = 0;
+                foreach (var item in records)
+                {
+                    Magazyn magazyn = new Magazyn();
+                    var magazyns = _dbContext.Magazyns.Select(x => x.Id).ToList();
+                    if (!magazyns.Contains(item.Id))
+                    {
+                        magazyn.Nazwa = item.Nazwa;
+                        magazyn.lokalizacja = item.Lokalizacja;
+                        magazyn.Przechowywane_Materialy = magazyn.Przechowywane_Materialy;
+                        magazyn.Pracownicy = new List<Pracownik>();
+                        magazyn.Towary = new List<Towar>();
+
+                        _dbContext.Magazyns.Add(magazyn);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Duplikaty += 1;
+                    }
+                }
+                return Duplikaty;
             }
         }
 

@@ -51,7 +51,44 @@ namespace API_Magazynex_New.Services
             }
         }
 
+        public async Task<int> PracownikImport(IFormFile file)
+        {
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";",
+            };
 
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            using (var csv = new CsvReader(reader, csvConfig))
+            {
+                var records = csv.GetRecords<PracownikCsvDTO>();
+
+                int Duplikaty = 0;
+                foreach (var item in records)
+                {
+                    Pracownik pracownik = new Pracownik();
+                    var pracowniks = _dbContext.Pracowniks.Select(x => x.Id).ToList();
+                    if (!pracowniks.Contains(item.Id))
+                    {
+                        pracownik.Imie = item.Imie;
+                        pracownik.Nazwisko = item.Nazwisko;
+                        pracownik.Stanowisko = item.Stanowisko;
+                        pracownik.Id = item.Id;
+                        pracownik.Numer_Telefonu = item.NumerTelefonu;
+                        pracownik.MagazynId = item.MagazynId;
+                        pracownik.Magazyn = await _dbContext.Magazyns.FirstOrDefaultAsync(x => x.Id == item.MagazynId);
+
+                        _dbContext.Pracowniks.Add(pracownik);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Duplikaty += 1;
+                    }
+                }
+                return Duplikaty;
+            }
+        }
 
         public async Task<PracownikSimpleDTO> CreateNewPracownik(PracownikCreateDTO dto)
         {

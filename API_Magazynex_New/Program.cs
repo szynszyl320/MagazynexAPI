@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Reflection.Metadata;
 using API_Magazynex_New.CsvDTO;
 using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
+
+builder.Services.AddAntiforgery();
 
 builder.Services.AddOpenApiDocument(config =>
 {
@@ -71,6 +74,7 @@ app.MapControllers();
 
 app.UseCors("Cors_Access");
 
+app.UseAntiforgery();
 
 app.MapGet("/firmas", async (FirmaService firma) =>
 { 
@@ -90,12 +94,17 @@ app.MapGet("/firmas/CSV", async (FirmaService firmaService) =>
     return await firmaService.FirmaExport();
 });
 
-
 app.MapPost("/firmas", async (FirmaService firmaService, FirmaCreateDTO dto) =>
 {
     var firmareturn = await firmaService.CreateNewFirma(dto);
     return Results.Created($"/firmas/{firmareturn.Id}", firmareturn);
 });
+
+app.MapPost("/firmas/import", async (FirmaService firmaService, IFormFile file) =>
+{
+    var duplikaty = await firmaService.FirmaImport(file);
+    return Results.Ok(duplikaty);
+}).DisableAntiforgery(); 
 
 app.MapPut("/firmas/{Id}", async (FirmaService firmaService, int Id, FirmaCreateDTO dto) =>
 {
@@ -138,6 +147,12 @@ app.MapGet("/magazyns/CSV", async (MagazynService magazynService) =>
 {
     return await magazynService.MagazynExport();
 });
+
+app.MapPost("/magazyns/import", async (MagazynService magazynService, IFormFile file) =>
+{
+    var duplikaty = await magazynService.MagazynImport(file);
+    return Results.Ok(duplikaty);
+}).DisableAntiforgery();
 
 
 app.MapPost("/magazyns", async (MagazynCreateDTO dto, MagazynService magazynService) =>
@@ -188,6 +203,13 @@ app.MapGet("/towars/CSV", async (TowarService towarService) =>
     return await towarService.TowarExport();
 });
 
+app.MapPost("/towars/import", async (TowarService towarService, IFormFile file) =>
+{
+    var duplikaty = await towarService.TowarImport(file);
+    return Results.Ok(duplikaty);
+}).DisableAntiforgery();
+
+
 app.MapPost("/towars", async (TowarCreateDTO dto, TowarService towarService) =>
 {
     var returntowar = await towarService.CreateNewTowar(dto);
@@ -230,6 +252,12 @@ app.MapGet("/pracowniks/CSV", async (PracownikService pracownikService) =>
 {
     return await pracownikService.PracownikExport();
 });
+
+app.MapPost("/pracowniks/import", async (PracownikService pracownikService, IFormFile file) =>
+{
+    var duplikaty = await pracownikService.PracownikImport(file);
+    return Results.Ok(duplikaty);
+}).DisableAntiforgery();
 
 
 app.MapPost("/pracowniks", async (PracownikCreateDTO dto, PracownikService pracownikService) =>
