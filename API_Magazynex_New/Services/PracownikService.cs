@@ -6,7 +6,7 @@ using CsvHelper.Configuration;
 using CsvHelper;
 using System.Globalization;
 using API_Magazynex_New.ForeingAPI;
-using System.Xml.Linq;
+
 
 namespace API_Magazynex_New.Services
 {
@@ -111,8 +111,9 @@ namespace API_Magazynex_New.Services
             var AgeRespone = await httpClient.GetFromJsonAsync<AgifyRespone>($"https://api.agify.io?name={pracownik.Imie}");
             pracownik.AproxAge = AgeRespone.Age;
 
-            var NationRespone = await httpClient.GetFromJsonAsync<NationalizeResponse>($"https://api.nationalize.io/?name={pracownik.Imie}");
-            
+            NationalizeResponse NationRespone = await httpClient.GetFromJsonAsync<NationalizeResponse>($"https://api.nationalize.io/?name={pracownik.Imie}");
+            pracownik.AproxNat = NationRespone.Country.First().country_id;
+
 
             _dbContext.Pracowniks.Add(pracownik);
             await _dbContext.SaveChangesAsync();

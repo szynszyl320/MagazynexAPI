@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Magazynex_New.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240516072045_Enum")]
-    partial class Enum
+    [Migration("20240603051732_NationResponse")]
+    partial class NationResponse
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,12 +62,16 @@ namespace API_Magazynex_New.Migrations
                     b.Property<string>("Nazwa")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Przechowywane_Materialy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("lokalizacja")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("magazyns");
+                    b.ToTable("Magazyns");
                 });
 
             modelBuilder.Entity("API_Magazynex_New.Encje.Pracownik", b =>
@@ -78,11 +82,14 @@ namespace API_Magazynex_New.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Imie")
+                    b.Property<int?>("AproxAge")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AproxNat")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("Imie")
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("MagazynId")
                         .HasColumnType("int");
@@ -90,8 +97,9 @@ namespace API_Magazynex_New.Migrations
                     b.Property<string>("Nazwisko")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Numer_Telefonu")
-                        .HasColumnType("int");
+                    b.Property<string>("Numer_Telefonu")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Stanowisko")
                         .HasColumnType("longtext");
@@ -120,11 +128,8 @@ namespace API_Magazynex_New.Migrations
                     b.Property<int?>("Ilosc")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Klasa_Towarow_Niebezpiecznych")
-                        .HasColumnType("longtext");
+                    b.Property<int>("Klasa_Towaru")
+                        .HasColumnType("int");
 
                     b.Property<int?>("MagazynId")
                         .HasColumnType("int");
@@ -156,7 +161,7 @@ namespace API_Magazynex_New.Migrations
             modelBuilder.Entity("API_Magazynex_New.Encje.Towar", b =>
                 {
                     b.HasOne("API_Magazynex_New.Encje.Firma", "Firma")
-                        .WithMany("towars")
+                        .WithMany("Towars")
                         .HasForeignKey("FirmaId");
 
                     b.HasOne("API_Magazynex_New.Encje.Magazyn", "Magazyn")
@@ -170,7 +175,7 @@ namespace API_Magazynex_New.Migrations
 
             modelBuilder.Entity("API_Magazynex_New.Encje.Firma", b =>
                 {
-                    b.Navigation("towars");
+                    b.Navigation("Towars");
                 });
 
             modelBuilder.Entity("API_Magazynex_New.Encje.Magazyn", b =>

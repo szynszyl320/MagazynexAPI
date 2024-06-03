@@ -8,7 +8,7 @@
 
     public class Country
     {
-        public string CountryId { get; set; }
+        public string country_id { get; set; }
         public double Probability { get; set; }
     }
 

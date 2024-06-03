@@ -12,7 +12,7 @@ namespace API_Magazynex_New.CsvDTO
             Numer_Telefonu = pracownik.Numer_Telefonu;
             MagazynId = pracownik.MagazynId;
             AproxAge = pracownik.AproxAge;
-            //AproxNat = pracownik.AproxNat;
+            AproxNat = pracownik.AproxNat;
         }
         
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace API_Magazynex_New.CsvDTO
         public string Numer_Telefonu { get; set; }
         public int? MagazynId { get; set; }
         public int? AproxAge { get; set; }
-        //public string? AproxNat { get; set; }
+        public string? AproxNat { get; set; }
     }
 }

@@ -82,6 +82,9 @@ namespace API_Magazynex_New.Migrations
                     b.Property<int?>("AproxAge")
                         .HasColumnType("int");
 
+                    b.Property<string>("AproxNat")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Imie")
                         .HasColumnType("longtext");
 
